@@ -9,4 +9,4 @@ router.get("/", getComments);
 router.post("/", authenticate, addComment);
 router.delete("/:id", authenticate, deleteComment);
 
-export default router;sssss
+export default router;
