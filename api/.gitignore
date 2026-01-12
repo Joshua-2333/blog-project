@@ -1,0 +1,33 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+
+# Prisma generated files
+prisma/migrations/
+prisma/dev.db    # if using SQLite locally
+prisma/.env      # sometimes people put secrets here
+
+# Logs
+logs/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE / Editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Optional npm cache folder
+.npm/
+
+# Optional local files
+*.local
