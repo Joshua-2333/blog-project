@@ -9,33 +9,43 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  username  String    @unique
-  email     String?   @unique
-  password  String
-  posts     Post[]    @relation("AuthorPosts")
-  comments  Comment[]
-  createdAt DateTime  @default(now())
+  id       Int     @id @default(autoincrement())
+  username String  @unique
+  email    String? @unique
+  password String
+
+  // Relations
+  posts    Post[]
+  comments Comment[]
+
+  createdAt DateTime @default(now())
 }
 
 model Post {
-  id        Int       @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   title     String
   content   String
-  published Boolean   @default(false)
-  authorId  Int
-  author    User      @relation("AuthorPosts", fields: [authorId], references: [id])
-  comments  Comment[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  published Boolean @default(false)
+
+  // Relations
+  authorId Int
+  author   User      @relation(fields: [authorId], references: [id])
+  comments Comment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Comment {
-  id        Int      @id @default(autoincrement())
-  content   String
-  postId    Int
-  post      Post     @relation(fields: [postId], references: [id])
-  userId    Int?
-  user      User?    @relation(fields: [userId], references: [id])
+  id      Int    @id @default(autoincrement())
+  content String
+
+  // Relations
+  postId Int
+  post   Post @relation(fields: [postId], references: [id])
+
+  userId Int?
+  user   User? @relation(fields: [userId], references: [id])
+
   createdAt DateTime @default(now())
 }
