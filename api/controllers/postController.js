@@ -1,17 +1,28 @@
 // api/controllers/postController.js
 import prisma from "../prisma/prisma.config.js";
 
-// @desc    Get all posts
-// @route   GET /api/posts
-// @access  Public
+/**
+ * GET ALL POSTS
+ * - Public: only published posts
+ * - Auth + ?mine=true: only the user's own posts (drafts + published)
+ */
 export const getPosts = async (req, res, next) => {
   try {
+    const mine = req.query.mine === "true";
+    const isLoggedIn = !!req.user;
+
+    // Default: public users see only published posts
+    let where = { published: true };
+
+    // Logged-in users requesting their own posts
+    if (isLoggedIn && mine) {
+      where = { authorId: req.user.id };
+    }
+
     const posts = await prisma.post.findMany({
+      where,
       include: {
-        author: { select: { id: true, username: true, email: true } },
-        comments: {
-          include: { user: { select: { id: true, username: true } } },
-        },
+        author: { select: { id: true, username: true } },
       },
       orderBy: { createdAt: "desc" },
     });
@@ -22,9 +33,11 @@ export const getPosts = async (req, res, next) => {
   }
 };
 
-// @desc    Get a single post by ID
-// @route   GET /api/posts/:id
-// @access  Public
+/**
+ * GET SINGLE POST
+ * - Public: only published posts
+ * - Author: can view own draft
+ */
 export const getPostById = async (req, res, next) => {
   try {
     const postId = parseInt(req.params.id);
@@ -32,14 +45,24 @@ export const getPostById = async (req, res, next) => {
     const post = await prisma.post.findUnique({
       where: { id: postId },
       include: {
-        author: { select: { id: true, username: true, email: true } },
+        author: { select: { id: true, username: true } },
         comments: {
           include: { user: { select: { id: true, username: true } } },
+          orderBy: { createdAt: "desc" },
         },
       },
     });
 
-    if (!post) return res.status(404).json({ message: "Post not found" });
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    // Block access to drafts unless user is the author
+    if (!post.published) {
+      if (!req.user || req.user.id !== post.authorId) {
+        return res.status(403).json({ message: "Not authorized to view this post" });
+      }
+    }
 
     res.json(post);
   } catch (err) {
@@ -47,13 +70,14 @@ export const getPostById = async (req, res, next) => {
   }
 };
 
-// @desc    Create a new post
-// @route   POST /api/posts
-// @access  Private
+/**
+ * CREATE POST
+ * - Auth only
+ * - Draft by default
+ */
 export const createPost = async (req, res, next) => {
   try {
-    const { title, content, published } = req.body;
-    const userId = req.user.id; // from authenticate middleware
+    const { title, content, published = false } = req.body;
 
     if (!title || !content) {
       return res.status(400).json({ message: "Title and content are required" });
@@ -63,54 +87,74 @@ export const createPost = async (req, res, next) => {
       data: {
         title,
         content,
-        published: published || false,
-        authorId: userId,
+        published,
+        authorId: req.user.id,
       },
-      include: { author: { select: { id: true, username: true } } },
     });
 
-    res.status(201).json({ message: "Post created successfully", post });
+    res.status(201).json(post);
   } catch (err) {
     next(err);
   }
 };
 
-// @desc    Update a post
-// @route   PUT /api/posts/:id
-// @access  Private (author only)
+/**
+ * UPDATE POST
+ * - Auth only
+ * - Author only
+ */
 export const updatePost = async (req, res, next) => {
   try {
     const postId = parseInt(req.params.id);
     const { title, content, published } = req.body;
-    const userId = req.user.id;
 
-    const post = await prisma.post.findUnique({ where: { id: postId } });
-    if (!post) return res.status(404).json({ message: "Post not found" });
-    if (post.authorId !== userId) return res.status(403).json({ message: "Not authorized" });
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+    });
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    if (post.authorId !== req.user.id) {
+      return res.status(403).json({ message: "Not authorized" });
+    }
 
     const updatedPost = await prisma.post.update({
       where: { id: postId },
-      data: { title, content, published },
-      include: { author: { select: { id: true, username: true } } },
+      data: {
+        title: title ?? post.title,
+        content: content ?? post.content,
+        published: published ?? post.published,
+      },
     });
 
-    res.json({ message: "Post updated successfully", post: updatedPost });
+    res.json(updatedPost);
   } catch (err) {
     next(err);
   }
 };
 
-// @desc    Delete a post
-// @route   DELETE /api/posts/:id
-// @access  Private (author only)
+/**
+ * DELETE POST
+ * - Auth only
+ * - Author only
+ */
 export const deletePost = async (req, res, next) => {
   try {
     const postId = parseInt(req.params.id);
-    const userId = req.user.id;
 
-    const post = await prisma.post.findUnique({ where: { id: postId } });
-    if (!post) return res.status(404).json({ message: "Post not found" });
-    if (post.authorId !== userId) return res.status(403).json({ message: "Not authorized" });
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+    });
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    if (post.authorId !== req.user.id) {
+      return res.status(403).json({ message: "Not authorized" });
+    }
 
     await prisma.post.delete({ where: { id: postId } });
 

@@ -7,13 +7,16 @@ import {
   updatePost,
   deletePost,
 } from "../controllers/postController.js";
-import { authenticate } from "../middleware/authMiddleware.js";
+import {
+  authenticate,
+  optionalAuthenticate,
+} from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// Public routes
-router.get("/", getPosts);
-router.get("/:id", getPostById);
+// Public routes (auth optional for enhanced behavior)
+router.get("/", optionalAuthenticate, getPosts);
+router.get("/:id", optionalAuthenticate, getPostById);
 
 // Protected routes
 router.post("/", authenticate, createPost);

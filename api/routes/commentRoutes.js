@@ -5,13 +5,13 @@ import { authenticate } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// Public: get all comments
+// Public route: get all comments (only for published posts)
 router.get("/", getComments);
 
-// Private: add a comment
+// Protected route: add a comment
 router.post("/", authenticate, addComment);
 
-// Private: delete a comment (only author)
+// Protected route: delete a comment (author only)
 router.delete("/:id", authenticate, deleteComment);
 
 export default router;
