@@ -3,8 +3,6 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import dotenv from "dotenv";
-import path from "path";
-import { fileURLToPath } from "url";
 
 // Import routes
 import authRoutes from "./routes/authRoutes.js";
@@ -15,40 +13,54 @@ import commentRoutes from "./routes/commentRoutes.js";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
-// Needed to use __dirname in ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
+// =======================
 // Middleware
+// =======================
 app.use(cors());
-app.use(express.json()); // for parsing JSON bodies
+app.use(express.json()); // Parse JSON bodies
 app.use(morgan("dev"));
 
-// Routes
+// =======================
+// API Routes
+// =======================
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
 
-// Root route
+// =======================
+// Root / Health Check
+// =======================
 app.get("/", (req, res) => {
-  res.send("Blog API is running!");
+  res.json({ message: "Blog API is running 🚀" });
 });
 
-// 404 handler for unknown endpoints
+// =======================
+// 404 Handler (JSON ONLY)
+// =======================
 app.use((req, res) => {
-  res.status(404).sendFile(path.join(__dirname, "views", "404.html"));
+  res.status(404).json({
+    error: "Not Found",
+    message: `Route ${req.originalUrl} does not exist`,
+  });
 });
 
-// Global error handler
+// =======================
+// Global Error Handler
+// =======================
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).sendFile(path.join(__dirname, "views", "500.html"));
+  res.status(500).json({
+    error: "Internal Server Error",
+    message: err.message || "Something went wrong",
+  });
 });
 
-// Start server
+// =======================
+// Start Server
+// =======================
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

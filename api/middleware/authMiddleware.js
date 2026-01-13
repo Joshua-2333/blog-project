@@ -1,6 +1,19 @@
 // api/middleware/authMiddleware.js
+import jwt from "jsonwebtoken";
+
 export const authenticate = (req, res, next) => {
-  // Placeholder middleware
-  console.log("Auth middleware hit");
-  next();
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ message: "No token provided" });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); // make sure JWT_SECRET matches the one used to sign tokens
+    req.user = decoded; // attach user info to req
+    next();
+  } catch (err) {
+    return res.status(401).json({ message: "Invalid token" });
+  }
 };
