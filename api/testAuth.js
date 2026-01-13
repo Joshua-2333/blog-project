@@ -16,7 +16,7 @@ const registerUser = async () => {
       body: JSON.stringify({
         username: "josh",
         email: "josh@example.com",
-        password: "password123"
+        password: "password123",
       }),
     });
 
@@ -35,12 +35,13 @@ const loginUser = async () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         usernameOrEmail: "josh",
-        password: "password123"
+        password: "password123",
       }),
     });
 
     const data = await res.json();
     console.log("✅ LOGIN RESPONSE:", data);
+    return data.token; // return JWT for further testing
   } catch (err) {
     console.error("❌ Error logging in user:", err);
   }
@@ -48,9 +49,12 @@ const loginUser = async () => {
 
 // RUN BOTH
 const testAuth = async () => {
+  console.log("\nSTARTING AUTH TEST\n");
   await registerUser();
   await wait(500); // small delay to ensure DB processes registration
-  await loginUser();
+  const token = await loginUser();
+  console.log("\nAUTH TEST COMPLETE\n");
+  return token;
 };
 
 testAuth();

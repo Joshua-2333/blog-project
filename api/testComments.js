@@ -3,13 +3,13 @@ import fetch from "node-fetch";
 
 // CONFIG
 const BASE_URL = "http://localhost:3000/api";
-const TOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJqb3NoIiwiZW1haWwiOiJqb3NoQGV4YW1wbGUuY29tIiwiaWF0IjoxNzY4MjcxMTg5LCJleHAiOjE3NjgzNTc1ODl9.Kuc1zmSdEtKGW_0spLN2Q9EFiQ1fzwM-pV7eWlNfCPw";
+// Paste the JWT returned from testAuth.js login
+const TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJqb3NoIiwiZW1haWwiOiJqb3NoQGV4YW1wbGUuY29tIiwiaWF0IjoxNzY4MzMzMzU3LCJleHAiOjE3Njg0MTk3NTd9.ZGN3CIrE1uBSRQfON5uSMWrqwOosZToehznlwckeJ9A";
 
 let postId = null;
 let createdCommentId = null;
 
-// HELPER: SAFE JSON PARSER
+// HELPER: Safe JSON parser
 const parseJsonSafe = async (res) => {
   const text = await res.text();
   try {
@@ -35,7 +35,7 @@ const ensurePost = async () => {
     return;
   }
 
-  // Otherwise create a test post
+  // Otherwise create a test post (published: true)
   console.log("No posts found. Creating one...");
 
   const createRes = await fetch(`${BASE_URL}/posts`, {
@@ -47,12 +47,12 @@ const ensurePost = async () => {
     body: JSON.stringify({
       title: "Test Post",
       content: "This post was created automatically for comment testing",
+      published: true, // important: make the post commentable
     }),
   });
 
   const createdPost = await parseJsonSafe(createRes);
-
-  // Handle both common API response shapes
+  // Handle both common API response formats
   postId = createdPost?.post?.id || createdPost?.id || null;
 
   if (postId) {
@@ -85,11 +85,14 @@ const addComment = async () => {
 
   const data = await parseJsonSafe(res);
 
-  if (data?.comment?.id) {
-    createdCommentId = data.comment.id;
-    console.log(`Comment created (id: ${createdCommentId})`);
+  // Handle both response formats
+  const commentObj = data?.comment || data;
+
+  if (commentObj?.id) {
+    createdCommentId = commentObj.id;
+    console.log(`✅ Comment created (id: ${createdCommentId})`);
   } else {
-    console.error("Failed to create comment:", data);
+    console.error("❌ Failed to create comment:", data);
   }
 };
 
