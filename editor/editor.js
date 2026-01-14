@@ -82,12 +82,33 @@ signupPassword.addEventListener("input", () => {
 });
 
 /*LIVE VALIDATION (LOGIN)*/
-usernameOrEmailInput.addEventListener("input", () => {
-  usernameOrEmailInput.value.trim() === "" ? setError(usernameOrEmailInput) : setValid(usernameOrEmailInput);
-});
+const validateLoginUsernameOrEmail = () => {
+  const val = usernameOrEmailInput.value.trim();
+  if (val.includes("@")) {
+    // treat as email
+    if (isValidEmail(val)) {
+      setValid(usernameOrEmailInput);
+      return true;
+    } else {
+      setError(usernameOrEmailInput);
+      return false;
+    }
+  } else {
+    // treat as username
+    if (val.length >= 3) {
+      setValid(usernameOrEmailInput);
+      return true;
+    } else {
+      setError(usernameOrEmailInput);
+      return false;
+    }
+  }
+};
+
+usernameOrEmailInput.addEventListener("input", validateLoginUsernameOrEmail);
 
 passwordInput.addEventListener("input", () => {
-  passwordInput.value.length < 6 ? setError(passwordInput) : setValid(passwordInput);
+  passwordInput.value.length >= 6 ? setValid(passwordInput) : setError(passwordInput);
 });
 
 /*SECTION VISIBILITY*/
@@ -122,35 +143,29 @@ goToLoginLink.addEventListener("click", (e) => {
 
 /*LOGIN (ALL ERRORS)*/
 loginBtn.addEventListener("click", async () => {
-  loginMessage.textContent = "";
+  loginMessage.innerHTML = "";
   const usernameOrEmail = usernameOrEmailInput.value.trim();
   const password = passwordInput.value;
-
   const errors = [];
 
   // Validate username/email
-  if (!usernameOrEmail) {
-    errors.push("Username or email is required");
-    setError(usernameOrEmailInput);
-  } else {
-    setValid(usernameOrEmailInput);
+  if (!validateLoginUsernameOrEmail()) {
+    errors.push("Invalid username or email");
   }
 
   // Validate password
   if (!password || password.length < 6) {
-    errors.push("Password must be at least 6 characters");
     setError(passwordInput);
+    errors.push("Password must be at least 6 characters");
   } else {
     setValid(passwordInput);
   }
 
-  // If errors, show all and stop
   if (errors.length > 0) {
     loginMessage.innerHTML = errors.join("<br>");
     return;
   }
 
-  // Proceed to login
   try {
     const res = await fetch(`${BASE_URL}/auth/login`, {
       method: "POST",
@@ -208,13 +223,12 @@ signupBtn.addEventListener("click", async () => {
     setValid(signupPassword);
   }
 
-  // If there are errors, show all and stop
+  // Show all errors if any
   if (errors.length > 0) {
     signupMessage.innerHTML = errors.join("<br>");
     return;
   }
 
-  // Proceed to signup request
   try {
     const res = await fetch(`${BASE_URL}/auth/register`, {
       method: "POST",

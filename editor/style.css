@@ -46,7 +46,12 @@ textarea:focus {
   outline: none;
 }
 
-/* Validation states */
+textarea {
+  height: 150px;
+  resize: vertical;
+}
+
+/*VALIDATION STATES*/
 .input-error {
   border-color: #dc3545;
   background-color: #fff5f5;
@@ -54,11 +59,6 @@ textarea:focus {
 
 .input-valid {
   border-color: #28a745;
-}
-
-textarea {
-  height: 150px;
-  resize: vertical;
 }
 
 /*PASSWORD WRAPPER*/
