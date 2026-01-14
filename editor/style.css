@@ -1,7 +1,5 @@
 /* style.css */
-/* =========================
-   GLOBAL STYLES
-========================= */
+/*GLOBAL STYLES*/
 * {
   box-sizing: border-box;
 }
@@ -13,9 +11,7 @@ body {
   padding: 0;
 }
 
-/* =========================
-   CONTAINER
-========================= */
+/*CONTAINER*/
 .container {
   max-width: 700px;
   margin: 2rem auto;
@@ -25,18 +21,14 @@ body {
   border-radius: 8px;
 }
 
-/* =========================
-   HEADINGS
-========================= */
+/*HEADINGS*/
 h1,
 h2 {
   text-align: center;
   margin-bottom: 1rem;
 }
 
-/* =========================
-   INPUTS & TEXTAREAS
-========================= */
+/*INPUTS & TEXTAREAS*/
 input,
 textarea {
   width: 100%;
@@ -69,9 +61,7 @@ textarea {
   resize: vertical;
 }
 
-/* =========================
-   PASSWORD WRAPPER
-========================= */
+/*PASSWORD WRAPPER*/
 .password-wrapper {
   position: relative;
 }
@@ -95,9 +85,7 @@ textarea {
   color: #007bff;
 }
 
-/* =========================
-   BUTTONS
-========================= */
+/*BUTTONS*/
 button {
   padding: 0.6rem 1.2rem;
   margin: 0.5rem 0.25rem 0 0;
@@ -119,9 +107,7 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* =========================
-   LINKS
-========================= */
+/*LINKS*/
 a {
   color: #007bff;
   text-decoration: none;
@@ -131,9 +117,7 @@ a:hover {
   text-decoration: underline;
 }
 
-/* =========================
-   MESSAGES
-========================= */
+/*MESSAGES*/
 p {
   margin: 0.5rem 0;
 }
@@ -152,18 +136,14 @@ p {
   color: #dc3545;
 }
 
-/* =========================
-   SECTIONS
-========================= */
+/*SECTIONS*/
 #login-section,
 #signup-section,
 #editor-section {
   margin-top: 1rem;
 }
 
-/* =========================
-   CHECKBOX LABEL
-========================= */
+/*CHECKBOX LABEL*/
 label {
   display: inline-flex;
   align-items: center;

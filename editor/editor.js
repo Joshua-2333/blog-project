@@ -1,9 +1,7 @@
 // editor/editor.js
 const BASE_URL = "http://localhost:3000/api";
 
-/* =========================
-   DOM ELEMENTS
-========================= */
+/*DOM ELEMENTS*/
 const loginSection = document.getElementById("login-section");
 const signupSection = document.getElementById("signup-section");
 const editorSection = document.getElementById("editor-section");
@@ -34,15 +32,11 @@ const createBtn = document.getElementById("create-btn");
 const updateBtn = document.getElementById("update-btn");
 const editorMessage = document.getElementById("editor-message");
 
-/* =========================
-   STATE
-========================= */
+/*STATE*/
 let JWT = localStorage.getItem("jwt");
 let currentPostId = null;
 
-/* =========================
-   HELPERS
-========================= */
+/*HELPERS*/
 const isValidEmail = (email) =>
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
@@ -56,9 +50,7 @@ const setValid = (input) => {
   input.classList.add("input-valid");
 };
 
-/* =========================
-   PASSWORD TOGGLE
-========================= */
+/*PASSWORD TOGGLE*/
 const setupPasswordToggle = (input, icon) => {
   if (!input || !icon) return;
 
@@ -76,9 +68,7 @@ const setupPasswordToggle = (input, icon) => {
 setupPasswordToggle(passwordInput, toggleLoginPassword);
 setupPasswordToggle(signupPassword, toggleSignupPassword);
 
-/* =========================
-   LIVE VALIDATION (SIGNUP)
-========================= */
+/*LIVE VALIDATION (SIGNUP)*/
 signupUsername.addEventListener("input", () => {
   signupUsername.value.length < 3 ? setError(signupUsername) : setValid(signupUsername);
 });
@@ -91,9 +81,7 @@ signupPassword.addEventListener("input", () => {
   signupPassword.value.length < 6 ? setError(signupPassword) : setValid(signupPassword);
 });
 
-/* =========================
-   LIVE VALIDATION (LOGIN)
-========================= */
+/*LIVE VALIDATION (LOGIN)*/
 usernameOrEmailInput.addEventListener("input", () => {
   usernameOrEmailInput.value.trim() === "" ? setError(usernameOrEmailInput) : setValid(usernameOrEmailInput);
 });
@@ -102,9 +90,7 @@ passwordInput.addEventListener("input", () => {
   passwordInput.value.length < 6 ? setError(passwordInput) : setValid(passwordInput);
 });
 
-/* =========================
-   SECTION VISIBILITY
-========================= */
+/*SECTION VISIBILITY*/
 const showLogin = () => {
   loginSection.style.display = "block";
   signupSection.style.display = "none";
@@ -123,9 +109,7 @@ const showEditor = () => {
   editorSection.style.display = "block";
 };
 
-/* =========================
-   NAV LINKS
-========================= */
+/*NAV LINKS*/
 goToSignupLink.addEventListener("click", (e) => {
   e.preventDefault();
   showSignup();
@@ -136,9 +120,7 @@ goToLoginLink.addEventListener("click", (e) => {
   showLogin();
 });
 
-/* =========================
-   LOGIN (ALL ERRORS)
-========================= */
+/*LOGIN (ALL ERRORS)*/
 loginBtn.addEventListener("click", async () => {
   loginMessage.textContent = "";
   const usernameOrEmail = usernameOrEmailInput.value.trim();
@@ -192,9 +174,7 @@ loginBtn.addEventListener("click", async () => {
   }
 });
 
-/* =========================
-   SIGNUP (ALL ERRORS)
-========================= */
+/*SIGNUP (ALL ERRORS)*/
 signupBtn.addEventListener("click", async () => {
   signupMessage.textContent = "";
 
@@ -255,16 +235,12 @@ signupBtn.addEventListener("click", async () => {
   }
 });
 
-/* =========================
-   LOGOUT
-========================= */
+/*LOGOUT*/
 logoutBtn.addEventListener("click", () => {
   localStorage.removeItem("jwt");
   JWT = null;
   showLogin();
 });
 
-/* =========================
-   INITIAL VIEW
-========================= */
+/*INITIAL VIEW*/
 JWT ? showEditor() : showLogin();
