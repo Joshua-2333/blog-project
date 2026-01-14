@@ -1,0 +1,310 @@
+/*public/style.css*/
+/* =========================
+   BASE / RESET
+========================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html { font-size: 16px; }
+
+body {
+  margin: 0;
+  font-family: Arial, system-ui, -apple-system, sans-serif;
+  background: #f4f4f4;
+  color: #222;
+  line-height: 1.6;
+}
+
+/* =========================
+   CONTAINER
+========================= */
+.container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* =========================
+   HEADER
+========================= */
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.home-header h1 { 
+  margin: 0; 
+  font-size: 2rem; 
+  color: #005fcc;
+}
+
+.home-header nav {
+  display: flex;
+  gap: 0.5rem;
+}
+
+a, .btn {
+  color: #fff;
+  background-color: #005fcc;
+  padding: 0.65rem 1.25rem;
+  border-radius: 5px;
+  text-decoration: none;
+  text-align: center;
+  font-weight: 500;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+a:hover, .btn:hover {
+  background-color: #0046a5;
+  transform: translateY(-1px);
+}
+
+a:focus, .btn:focus {
+  outline: 3px solid #002f6c;
+  outline-offset: 2px;
+}
+
+/* =========================
+   POST CARDS
+========================= */
+#posts-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.post-card {
+  background: #fefefe;
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.post-card:hover {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  transform: translateY(-2px);
+}
+
+.post-card:focus {
+  outline: 3px solid #005fcc;
+  outline-offset: 2px;
+}
+
+.post-card h3 { 
+  margin: 0; 
+  font-size: 1.25rem;
+  color: #005fcc;
+}
+.post-card .post-meta {
+  font-size: 0.85rem;
+  color: #666;
+}
+.post-card .post-preview {
+  font-size: 0.95rem;
+  color: #333;
+  margin-top: 0.3rem;
+}
+
+/* =========================
+   MODAL
+========================= */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 1000;
+}
+
+.modal[hidden] { display: none; }
+
+.modal-content {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1.8rem;
+  width: 100%;
+  max-width: 640px;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+}
+
+/* CLOSE BUTTON */
+.close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  font-size: 1.75rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #222;
+}
+.close:hover { color: #005fcc; }
+.close:focus { outline: 3px solid #005fcc; outline-offset: 2px; }
+
+/* COMMENTS */
+#comments-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: #f9f9f9;
+  border-radius: 5px;
+}
+.comment {
+  padding: 0.5rem;
+  border-top: 1px solid #ddd;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+/* =========================
+   INPUTS / TEXTAREAS
+========================= */
+input[type="text"], input[type="email"], input[type="password"], textarea {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: #005fcc;
+  box-shadow: 0 0 0 2px rgba(0,95,204,0.2);
+}
+
+/* =========================
+   PASSWORD WRAPPER + ICON
+========================= */
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper input {
+  padding-right: 2.5rem; /* space for icon */
+}
+
+.password-wrapper .material-symbols-outlined {
+  position: absolute;
+  right: 0.5rem;
+  cursor: pointer;
+  font-size: 1.3rem;
+  color: #666;
+  user-select: none;
+}
+
+.password-wrapper .material-symbols-outlined:hover,
+.password-wrapper .material-symbols-outlined:focus {
+  color: #005fcc;
+  outline: 2px solid #005fcc;
+  outline-offset: 2px;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+button, .btn {
+  cursor: pointer;
+}
+
+#submit-comment, #create-btn, #login-btn, #signup-btn, #logout-btn {
+  padding: 0.6rem 1.2rem;
+  border-radius: 5px;
+  border: none;
+  background: #005fcc;
+  color: #fff;
+  font-weight: 500;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+#submit-comment:hover, #create-btn:hover, #login-btn:hover, #signup-btn:hover, #logout-btn:hover {
+  background: #0046a5;
+  transform: translateY(-1px);
+}
+
+#submit-comment:focus, #create-btn:focus, #login-btn:focus, #signup-btn:focus, #logout-btn:focus {
+  outline: 3px solid #002f6c;
+  outline-offset: 2px;
+}
+
+/* =========================
+   VALIDATION MESSAGES
+========================= */
+/* Single block below form for all errors */
+#login-message, #signup-message, #editor-message, #comment-message {
+  font-size: 0.9rem;
+  color: #b00020;
+  margin-top: 0.75rem;
+  line-height: 1.4;
+}
+
+/* Input states */
+input.invalid {
+  border-color: #b00020;
+  background: #fff5f5;
+}
+
+input.valid {
+  border-color: #1b7f3b;
+}
+
+/* =========================
+   SCREEN READER ONLY
+========================= */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0);
+  white-space: nowrap; border: 0;
+}
+
+/* =========================
+   RESPONSIVE TABLET
+========================= */
+@media (max-width: 768px) {
+  .container { margin: 1rem; padding: 1rem; }
+  button, .btn { width: 100%; align-self: stretch; }
+  .post-card { padding: 0.85rem; }
+  .password-wrapper .material-symbols-outlined { right: 0.4rem; font-size: 1.2rem; }
+}
+
+/* =========================
+   RESPONSIVE MOBILE
+========================= */
+@media (max-width: 480px) {
+  h1 { font-size: 1.6rem; }
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.1rem; }
+  textarea, input[type="text"], input[type="email"], input[type="password"] { font-size: 0.95rem; }
+  button, .btn { font-size: 0.95rem; }
+}
