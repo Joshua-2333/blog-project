@@ -2,61 +2,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Blog Editor</title>
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+    rel="stylesheet"
+  />
 </head>
 <body>
   <div class="container">
     <h1>Blog Editor</h1>
 
-    <!-- LOGIN SECTION -->
+    <!-- LOGIN -->
     <div id="login-section">
       <h2>Login</h2>
-      <input type="text" id="usernameOrEmail" placeholder="Username or Email" />
+
+      <input
+        type="text"
+        id="usernameOrEmail"
+        placeholder="Username or Email"
+      />
+
       <div class="password-wrapper">
         <input type="password" id="password" placeholder="Password" />
-        <span id="toggleLoginPassword" class="material-symbols-outlined">visibility</span>
+        <span id="toggleLoginPassword" class="material-symbols-outlined">
+          visibility
+        </span>
       </div>
+
       <button id="login-btn">Login</button>
       <p id="login-message"></p>
+
       <p>
-        Don't have an account? 
+        Don’t have an account?
         <a href="#" id="go-to-signup">Sign up here</a>
       </p>
     </div>
 
-    <!-- SIGNUP SECTION -->
-    <div id="signup-section" style="display:none;">
+    <!-- SIGNUP -->
+    <div id="signup-section" style="display: none;">
       <h2>Sign Up</h2>
-      <input type="text" id="signup-username" placeholder="Username" />
-      <input type="email" id="signup-email" placeholder="Email (optional)" />
+
+      <input
+        type="text"
+        id="signup-username"
+        placeholder="Username (min 3 characters)"
+      />
+
+      <input
+        type="email"
+        id="signup-email"
+        placeholder="name@domain.com"
+      />
+
       <div class="password-wrapper">
-        <input type="password" id="signup-password" placeholder="Password" />
-        <span id="toggleSignupPassword" class="material-symbols-outlined">visibility</span>
+        <input
+          type="password"
+          id="signup-password"
+          placeholder="Password (min 6 characters)"
+        />
+        <span id="toggleSignupPassword" class="material-symbols-outlined">
+          visibility
+        </span>
       </div>
+
       <button id="signup-btn">Sign Up</button>
       <p id="signup-message"></p>
+
       <p>
-        Already have an account? 
+        Already have an account?
         <a href="#" id="go-to-login">Login here</a>
       </p>
     </div>
 
-    <!-- POST EDITOR SECTION -->
-    <div id="editor-section" style="display:none;">
-      <h2 id="editor-title">Create New Post</h2>
-      <input type="text" id="post-title" placeholder="Post Title" />
+    <!-- EDITOR -->
+    <div id="editor-section" style="display: none;">
+      <h2>Create New Post</h2>
+
+      <input id="post-title" placeholder="Post Title" />
       <textarea id="post-content" placeholder="Post Content"></textarea>
+
       <label>
-        <input type="checkbox" id="post-published" />
-        Published
+        <input type="checkbox" id="post-published" /> Published
       </label>
-      <br />
+
+      <br /><br />
+
       <button id="create-btn">Create Post</button>
       <button id="update-btn" style="display:none;">Update Post</button>
       <button id="logout-btn">Logout</button>
+
       <p id="editor-message"></p>
     </div>
   </div>

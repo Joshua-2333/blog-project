@@ -1,5 +1,11 @@
 /* style.css */
-/*GLOBAL STYLES*/
+/* =========================
+   GLOBAL STYLES
+========================= */
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: Arial, sans-serif;
   background: #f4f4f4;
@@ -7,93 +13,117 @@ body {
   padding: 0;
 }
 
+/* =========================
+   CONTAINER
+========================= */
 .container {
   max-width: 700px;
   margin: 2rem auto;
   padding: 2rem;
   background: #fff;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 }
 
-h1, h2 {
+/* =========================
+   HEADINGS
+========================= */
+h1,
+h2 {
   text-align: center;
   margin-bottom: 1rem;
 }
 
-/*INPUTS & TEXTAREAS*/
-input, textarea {
+/* =========================
+   INPUTS & TEXTAREAS
+========================= */
+input,
+textarea {
   width: 100%;
-  padding: 0.5rem;
+  padding: 0.6rem;
   margin: 0.5rem 0;
   border-radius: 4px;
   border: 1px solid #ccc;
-  box-sizing: border-box;
   font-size: 1rem;
-  transition: border 0.2s;
+  transition: border-color 0.2s, background-color 0.2s;
 }
 
-input:focus, textarea:focus {
-  border-color: #007BFF;
+input:focus,
+textarea:focus {
+  border-color: #007bff;
   outline: none;
 }
 
-/*PASSWORD WRAPPER*/
+/* Validation states */
+.input-error {
+  border-color: #dc3545;
+  background-color: #fff5f5;
+}
+
+.input-valid {
+  border-color: #28a745;
+}
+
+textarea {
+  height: 150px;
+  resize: vertical;
+}
+
+/* =========================
+   PASSWORD WRAPPER
+========================= */
 .password-wrapper {
   position: relative;
 }
 
 .password-wrapper input {
-  padding-right: 2.5rem; /* space for eye icon */
+  padding-right: 2.5rem;
 }
 
 .password-wrapper .material-symbols-outlined {
   position: absolute;
-  right: 0.5rem;
+  right: 0.6rem;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
   color: #888;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
+  user-select: none;
 }
 
 .password-wrapper .material-symbols-outlined:hover {
-  color: #007BFF;
+  color: #007bff;
 }
 
-/*BUTTONS*/
+/* =========================
+   BUTTONS
+========================= */
 button {
-  padding: 0.5rem 1rem;
-  margin: 0.5rem 0.25rem;
+  padding: 0.6rem 1.2rem;
+  margin: 0.5rem 0.25rem 0 0;
   cursor: pointer;
   border: none;
   border-radius: 4px;
-  background-color: #007BFF;
+  background-color: #007bff;
   color: #fff;
   font-size: 1rem;
-  transition: background 0.2s;
+  transition: background-color 0.2s, opacity 0.2s;
 }
 
 button:hover {
   background-color: #0056b3;
 }
 
-/*MESSAGES*/
-p {
-  margin: 0.5rem 0;
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
-p.success {
-  color: green;
-}
-
-p.error {
-  color: red;
-}
-
-/*LINKS*/
+/* =========================
+   LINKS
+========================= */
 a {
-  color: #007BFF;
+  color: #007bff;
   text-decoration: none;
 }
 
@@ -101,12 +131,42 @@ a:hover {
   text-decoration: underline;
 }
 
-/*FORM CONTAINERS*/
-#login-section, #signup-section, #editor-section {
+/* =========================
+   MESSAGES
+========================= */
+p {
+  margin: 0.5rem 0;
+}
+
+#login-message,
+#signup-message,
+#editor-message {
+  font-size: 0.95rem;
+}
+
+.success {
+  color: #28a745;
+}
+
+.error {
+  color: #dc3545;
+}
+
+/* =========================
+   SECTIONS
+========================= */
+#login-section,
+#signup-section,
+#editor-section {
   margin-top: 1rem;
 }
 
-textarea {
-  height: 150px;
-  resize: vertical;
+/* =========================
+   CHECKBOX LABEL
+========================= */
+label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
 }
