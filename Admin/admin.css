@@ -1,33 +1,207 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
+/* =========================
+   BASE RESET
+========================= */
+* {
+  box-sizing: border-box;
 }
 
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+    sans-serif;
+  background-color: #f6f7f9;
+  color: #222;
+}
+
+/* =========================
+   LAYOUT
+========================= */
 .container {
   width: 90%;
-  max-width: 900px;
-  margin: auto;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-bottom: 3rem;
 }
 
-header {
+/* =========================
+   HEADER
+========================= */
+.admin-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 1rem 0;
+  padding: 1.5rem 0;
+  border-bottom: 2px solid #e4e6eb;
 }
 
+.admin-header h1 {
+  margin: 0;
+  font-size: 1.75rem;
+}
+
+.admin-header nav {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* =========================
+   BUTTONS
+========================= */
 button {
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1.1rem;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  border: none;
   cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+}
+
+.primary-btn {
+  background-color: #2563eb;
+  color: white;
+}
+
+.primary-btn:hover {
+  background-color: #1d4ed8;
+}
+
+#logout-btn {
+  background-color: #e5e7eb;
+}
+
+#logout-btn:hover {
+  background-color: #d1d5db;
+}
+
+/* =========================
+   EDITOR CARD
+========================= */
+.editor-card {
+  margin-top: 2rem;
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* =========================
+   FORM ELEMENTS
+========================= */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+input[type="text"],
+input,
+textarea {
+  padding: 0.6rem 0.7rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-family: inherit;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 180px;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+/* =========================
+   CHECKBOX
+========================= */
+.checkbox-group {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.checkbox-group label {
+  margin: 0;
+  font-weight: normal;
+}
+
+/* =========================
+   FORM ACTIONS
+========================= */
+.form-actions {
+  margin-top: 1.5rem;
+}
+
+/* =========================
+   VALIDATION
+========================= */
+.validation-message {
+  margin-top: 0.75rem;
+  color: #b91c1c;
+}
+
+/* =========================
+   POSTS (ADMIN HOME)
+========================= */
 .post-card {
-  border: 1px solid #ccc;
-  margin: 1rem 0;
-  padding: 1rem;
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
-.post-card button {
-  margin-right: 0.5rem;
+.draft {
+  background-color: #fef3c7;
+  color: #92400e;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  .admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .editor-card {
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  button {
+    width: 100%;
+  }
+
+  .admin-header nav {
+    width: 100%;
+    flex-direction: column;
+  }
 }

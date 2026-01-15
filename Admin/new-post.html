@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>New Post</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="admin-header">
+      <h1>New Post</h1>
+      <nav>
+        <button id="back-btn">← Back</button>
+        <button id="logout-btn">Logout</button>
+      </nav>
+    </header>
+
+    <section id="editor-section" class="editor-card">
+      <div class="form-group">
+        <label for="post-title">Post title</label>
+        <input
+          id="post-title"
+          placeholder="Enter a clear, descriptive title"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="post-content">Post content</label>
+        <textarea
+          id="post-content"
+          placeholder="Write your post here..."
+          rows="10"
+        ></textarea>
+      </div>
+
+      <div class="form-group checkbox-group">
+        <input type="checkbox" id="post-published" />
+        <label for="post-published">Publish immediately</label>
+      </div>
+
+      <div class="form-actions">
+        <button id="create-btn" class="primary-btn">Publish Post</button>
+      </div>
+
+      <p id="editor-message" class="validation-message" aria-live="polite"></p>
+    </section>
+  </div>
+
+  <script type="module" src="new-post.js"></script>
+</body>
+</html>
