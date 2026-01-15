@@ -3,21 +3,24 @@ import prisma from "../prisma/prisma.config.js";
 
 /**
  * GET COMMENTS
- * - Public: only comments for published posts*/
- export const getComments = async (req, res, next) => {
+ * - Public
+ * - Only comments on published posts
+ */
+export const getComments = async (req, res, next) => {
   try {
-    const postId = req.query.postId ? parseInt(req.query.postId) : undefined;
+    const postId = req.query.postId
+      ? parseInt(req.query.postId)
+      : undefined;
 
     const comments = await prisma.comment.findMany({
       where: {
-        ...(postId && { postId }),// filter by postId if provided
-        post: { published: true },// only published posts
+        ...(postId && { postId }),
+        post: { published: true },
       },
       include: {
-        user: { select: { id: true, username: true } },// include comment author
-        post: { select: { id: true, title: true } },// include post info
+        user: { select: { id: true, username: true } },
       },
-      orderBy: { createdAt: "desc" },// newest first
+      orderBy: { createdAt: "desc" },
     });
 
     res.json(comments);
@@ -29,29 +32,28 @@ import prisma from "../prisma/prisma.config.js";
 /**
  * ADD COMMENT
  * - Authenticated users only
- * - Can only comment on published posts
+ * - Published posts only
  */
 export const addComment = async (req, res, next) => {
   try {
     const { content, postId } = req.body;
 
-    if (!content || !postId) {
-      return res.status(400).json({ message: "Content and postId are required" });
+    if (!content?.trim() || !postId) {
+      return res
+        .status(400)
+        .json({ message: "Content and postId are required" });
     }
 
-    // Ensure the post exists AND is published
     const post = await prisma.post.findFirst({
-      where: {
-        id: postId,
-        published: true,
-      },
+      where: { id: postId, published: true },
     });
 
     if (!post) {
-      return res.status(400).json({ message: "Cannot comment on unpublished post" });
+      return res
+        .status(400)
+        .json({ message: "Cannot comment on unpublished post" });
     }
 
-    // Create the comment
     const comment = await prisma.comment.create({
       data: {
         content,
@@ -71,8 +73,7 @@ export const addComment = async (req, res, next) => {
 
 /**
  * DELETE COMMENT
- * - Authenticated users only
- * - Only the comment author can delete
+ * - Owner OR admin
  */
 export const deleteComment = async (req, res, next) => {
   try {
@@ -86,13 +87,16 @@ export const deleteComment = async (req, res, next) => {
       return res.status(404).json({ message: "Comment not found" });
     }
 
-    if (comment.userId !== req.user.id) {
-      return res.status(403).json({ message: "Not authorized to delete this comment" });
+    const isOwner = comment.userId === req.user.id;
+    const isAdmin = req.user.role === "ADMIN";
+
+    if (!isOwner && !isAdmin) {
+      return res.status(403).json({ message: "Not authorized" });
     }
 
     await prisma.comment.delete({ where: { id: commentId } });
 
-    res.json({ message: "Comment deleted successfully" });
+    res.json({ message: "Comment deleted" });
   } catch (err) {
     next(err);
   }

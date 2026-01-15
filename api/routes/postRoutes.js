@@ -14,11 +14,11 @@ import {
 
 const router = express.Router();
 
-// Public routes (auth optional for enhanced behavior)
+// Public
 router.get("/", optionalAuthenticate, getPosts);
 router.get("/:id", optionalAuthenticate, getPostById);
 
-// Protected routes
+// Admin-only (enforced in controller)
 router.post("/", authenticate, createPost);
 router.put("/:id", authenticate, updatePost);
 router.delete("/:id", authenticate, deletePost);

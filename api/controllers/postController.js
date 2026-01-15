@@ -2,20 +2,18 @@
 import prisma from "../prisma/prisma.config.js";
 
 /**
- * GET ALL POSTS
- * - Public: only published posts
- * - Auth + ?mine=true: only the user's own posts (drafts + published)
+ * GET POSTS
+ * - Public: published only
+ * - Admin + ?mine=true: drafts + published
  */
 export const getPosts = async (req, res, next) => {
   try {
     const mine = req.query.mine === "true";
-    const isLoggedIn = !!req.user;
+    const isAdmin = req.user?.role === "ADMIN";
 
-    // Default: public users see only published posts
     let where = { published: true };
 
-    // Logged-in users requesting their own posts
-    if (isLoggedIn && mine) {
+    if (mine && isAdmin) {
       where = { authorId: req.user.id };
     }
 
@@ -35,8 +33,6 @@ export const getPosts = async (req, res, next) => {
 
 /**
  * GET SINGLE POST
- * - Public: only published posts
- * - Author: can view own draft
  */
 export const getPostById = async (req, res, next) => {
   try {
@@ -47,7 +43,9 @@ export const getPostById = async (req, res, next) => {
       include: {
         author: { select: { id: true, username: true } },
         comments: {
-          include: { user: { select: { id: true, username: true } } },
+          include: {
+            user: { select: { id: true, username: true } },
+          },
           orderBy: { createdAt: "desc" },
         },
       },
@@ -57,11 +55,8 @@ export const getPostById = async (req, res, next) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    // Block access to drafts unless user is the author
-    if (!post.published) {
-      if (!req.user || req.user.id !== post.authorId) {
-        return res.status(403).json({ message: "Not authorized to view this post" });
-      }
+    if (!post.published && req.user?.role !== "ADMIN") {
+      return res.status(403).json({ message: "Not authorized" });
     }
 
     res.json(post);
@@ -72,15 +67,20 @@ export const getPostById = async (req, res, next) => {
 
 /**
  * CREATE POST
- * - Auth only
- * - Draft by default
+ * - ADMIN ONLY
  */
 export const createPost = async (req, res, next) => {
   try {
+    if (req.user.role !== "ADMIN") {
+      return res.status(403).json({ message: "Admins only" });
+    }
+
     const { title, content, published = false } = req.body;
 
     if (!title || !content) {
-      return res.status(400).json({ message: "Title and content are required" });
+      return res.status(400).json({
+        message: "Title and content required",
+      });
     }
 
     const post = await prisma.post.create({
@@ -100,11 +100,14 @@ export const createPost = async (req, res, next) => {
 
 /**
  * UPDATE POST
- * - Auth only
- * - Author only
+ * - ADMIN ONLY
  */
 export const updatePost = async (req, res, next) => {
   try {
+    if (req.user.role !== "ADMIN") {
+      return res.status(403).json({ message: "Admins only" });
+    }
+
     const postId = parseInt(req.params.id);
     const { title, content, published } = req.body;
 
@@ -114,10 +117,6 @@ export const updatePost = async (req, res, next) => {
 
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
-    }
-
-    if (post.authorId !== req.user.id) {
-      return res.status(403).json({ message: "Not authorized" });
     }
 
     const updatedPost = await prisma.post.update({
@@ -137,28 +136,21 @@ export const updatePost = async (req, res, next) => {
 
 /**
  * DELETE POST
- * - Auth only
- * - Author only
+ * - ADMIN ONLY
  */
 export const deletePost = async (req, res, next) => {
   try {
+    if (req.user.role !== "ADMIN") {
+      return res.status(403).json({ message: "Admins only" });
+    }
+
     const postId = parseInt(req.params.id);
 
-    const post = await prisma.post.findUnique({
+    await prisma.post.delete({
       where: { id: postId },
     });
 
-    if (!post) {
-      return res.status(404).json({ message: "Post not found" });
-    }
-
-    if (post.authorId !== req.user.id) {
-      return res.status(403).json({ message: "Not authorized" });
-    }
-
-    await prisma.post.delete({ where: { id: postId } });
-
-    res.json({ message: "Post deleted successfully" });
+    res.json({ message: "Post deleted" });
   } catch (err) {
     next(err);
   }

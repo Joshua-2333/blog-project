@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Admin Panel</h1>
+      <button id="logout-btn">Logout</button>
+    </header>
+
+    <!-- CREATE POST -->
+    <section id="editor-section">
+      <h2>Create New Post</h2>
+      <input id="post-title" placeholder="Post title" />
+      <textarea id="post-content" placeholder="Write your post..."></textarea>
+      <label>
+        <input type="checkbox" id="post-published" />
+        Publish immediately
+      </label>
+      <button id="create-btn">Create Post</button>
+      <p id="editor-message" class="validation-message"></p>
+    </section>
+
+    <!-- POSTS LIST -->
+    <section id="posts-section">
+      <h2>All Posts</h2>
+      <div id="loading-posts">Loading posts…</div>
+      <div id="posts-list"></div>
+    </section>
+  </div>
+
+  <script type="module">
+    const logoutBtn = document.getElementById("logout-btn");
+
+    // Redirect non-admins back to Reader
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || user.role !== "ADMIN") {
+      window.location.href = "../Reader/index.html";
+    }
+
+    // Logout
+    logoutBtn.addEventListener("click", () => {
+      localStorage.clear();
+      window.location.href = "../Reader/index.html";
+    });
+  </script>
+</body>
+</html>

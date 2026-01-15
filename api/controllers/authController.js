@@ -18,6 +18,7 @@ const generateToken = (user) => {
       id: user.id,
       username: user.username,
       email: user.email,
+      role: user.role, // ✅ Include role in token
     },
     JWT_SECRET,
     { expiresIn: "1d" }
@@ -25,22 +26,18 @@ const generateToken = (user) => {
 };
 
 /**
- * @desc    Register new user
- * @route   POST /api/auth/register
- * @access  Public
+ * REGISTER
  */
 export const registerUser = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
 
-    // Validate input
     if (!username || !password) {
       return res
         .status(400)
         .json({ message: "Username and password are required" });
     }
 
-    // Check if user already exists
     const existingUser = await prisma.user.findFirst({
       where: {
         OR: [
@@ -54,19 +51,17 @@ export const registerUser = async (req, res, next) => {
       return res.status(409).json({ message: "User already exists" });
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create user
     const user = await prisma.user.create({
       data: {
         username,
         email,
         password: hashedPassword,
+        // role defaults to USER in schema
       },
     });
 
-    // Generate token
     const token = generateToken(user);
 
     res.status(201).json({
@@ -75,8 +70,10 @@ export const registerUser = async (req, res, next) => {
         id: user.id,
         username: user.username,
         email: user.email,
+        role: user.role,
       },
       token,
+      redirectTo: user.role === "ADMIN" ? "/Admin/admin.html" : "/Reader/index.html"
     });
   } catch (err) {
     next(err);
@@ -84,9 +81,7 @@ export const registerUser = async (req, res, next) => {
 };
 
 /**
- * @desc    Login user
- * @route   POST /api/auth/login
- * @access  Public
+ * LOGIN
  */
 export const loginUser = async (req, res, next) => {
   try {
@@ -98,7 +93,6 @@ export const loginUser = async (req, res, next) => {
       });
     }
 
-    // Find user by username OR email
     const user = await prisma.user.findFirst({
       where: {
         OR: [
@@ -112,13 +106,11 @@ export const loginUser = async (req, res, next) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // Compare password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // Generate token
     const token = generateToken(user);
 
     res.json({
@@ -127,8 +119,10 @@ export const loginUser = async (req, res, next) => {
         id: user.id,
         username: user.username,
         email: user.email,
+        role: user.role,
       },
       token,
+      redirectTo: user.role === "ADMIN" ? "/Admin/admin.html" : "/Reader/index.html"
     });
   } catch (err) {
     next(err);
