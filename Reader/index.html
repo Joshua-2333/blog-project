@@ -13,74 +13,67 @@
     <header class="home-header">
       <h1>My Blog</h1>
       <nav>
-        <!-- Buttons for logged-in users -->
-        <a href="#" class="btn" id="home-link" hidden>Home</a>
-        <button id="profile-btn" class="btn" hidden>
+        <a href="#" class="btn" id="home-link">Home</a>
+
+        <!-- Guest -->
+        <button id="login-nav-btn" class="btn">Login</button>
+
+        <!-- Logged-in -->
+        <button id="profile-btn" class="btn">
           <span class="material-symbols-outlined">account_circle</span>
         </button>
-        <button id="logout-btn" class="btn" hidden>Logout</button>
+        <button id="logout-btn" class="btn">Logout</button>
       </nav>
     </header>
 
-    <!-- LOGIN SECTION -->
-    <section id="login-section">
+    <!-- LOGIN -->
+    <section id="login-section" hidden>
       <h2>Login</h2>
       <input id="usernameOrEmail" placeholder="Username or Email">
       <div class="password-wrapper">
         <input id="password" type="password" placeholder="Password">
-        <span id="toggleLoginPassword" class="material-symbols-outlined" role="button" tabindex="0" aria-label="Show or hide password">visibility</span>
+        <span id="toggleLoginPassword" class="material-symbols-outlined">visibility</span>
       </div>
-      <p id="login-message" class="validation-message" aria-live="polite"></p>
+      <p id="login-message" class="validation-message"></p>
       <button id="login-btn">Login</button>
       <p>Don’t have an account? <a href="#" id="go-to-signup">Sign up</a></p>
     </section>
 
-    <!-- SIGNUP SECTION -->
+    <!-- SIGNUP -->
     <section id="signup-section" hidden>
       <h2>Sign Up</h2>
-      <input id="signup-username" placeholder="Username (min 3 characters)">
-      <input id="signup-email" type="email" placeholder="name@email.com">
+      <input id="signup-username" placeholder="Username">
+      <input id="signup-email" type="email" placeholder="Email">
       <div class="password-wrapper">
-        <input id="signup-password" type="password" placeholder="Password (min 6 characters)">
-        <span id="toggleSignupPassword" class="material-symbols-outlined" role="button" tabindex="0" aria-label="Show or hide password">visibility</span>
+        <input id="signup-password" type="password" placeholder="Password">
+        <span id="toggleSignupPassword" class="material-symbols-outlined">visibility</span>
       </div>
-      <p id="signup-message" class="validation-message" aria-live="polite"></p>
+      <p id="signup-message" class="validation-message"></p>
       <button id="signup-btn">Create Account</button>
       <p>Already have an account? <a href="#" id="go-to-login">Login</a></p>
     </section>
 
-    <!-- CREATE POST SECTION (ADMIN ONLY, hidden for readers) -->
-    <section id="editor-section" hidden>
-      <h2>Create New Post</h2>
-      <input id="post-title" placeholder="Post title">
-      <textarea id="post-content" placeholder="Write your post..."></textarea>
-      <label><input type="checkbox" id="post-published"> Publish immediately</label>
-      <button id="create-btn">Create Post</button>
-      <p id="editor-message" class="validation-message"></p>
-    </section>
-
-    <!-- HOME / POSTS -->
-    <main id="home-section" hidden>
+    <!-- HOME -->
+    <main id="home-section">
       <div id="posts-section">
-        <!-- Default message if no posts from admin -->
-        <p>No posts from the admin yet.</p>
+        <p>Loading posts…</p>
       </div>
     </main>
 
-    <!-- POST MODAL -->
+    <!-- MODAL -->
     <div id="post-modal" class="modal" hidden>
       <div class="modal-content">
         <button id="close-modal" class="close">×</button>
         <h2 id="modal-title"></h2>
-        <p id="modal-meta" class="post-meta"></p>
+        <p id="modal-meta"></p>
         <p id="modal-content"></p>
         <hr>
         <h3>Comments</h3>
         <div id="comments-section"></div>
         <div id="comment-form">
-          <textarea id="comment-input" placeholder="Write a comment…" maxlength="500"></textarea>
-          <button id="submit-comment">Submit Comment</button>
-          <p id="comment-message" class="validation-message"></p>
+          <textarea id="comment-input"></textarea>
+          <button id="submit-comment">Submit</button>
+          <p id="comment-message"></p>
         </div>
         <p id="login-required" hidden>You must be logged in to comment.</p>
       </div>
