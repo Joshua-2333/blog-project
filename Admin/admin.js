@@ -1,3 +1,4 @@
+/* Admin/admin.js */
 const BASE_URL = "http://localhost:3000/api";
 const JWT = localStorage.getItem("jwt");
 const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -49,7 +50,13 @@ async function fetchPosts() {
       const div = document.createElement("div");
       div.className = "post-card";
 
+      // Image HTML
+      const imageHTML = post.imageUrl
+        ? `<img src="${post.imageUrl}" alt="Image for ${post.title}" class="post-image">`
+        : "";
+
       div.innerHTML = `
+        ${imageHTML}
         <h3>
           ${post.title}
           ${!post.published ? "<span class='draft'>Draft</span>" : ""}
