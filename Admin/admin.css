@@ -1,8 +1,6 @@
 /* Admin.css */
 
-/* =========================
-   BASE RESET
-========================= */
+/*BASE RESET*/
 *,
 *::before,
 *::after {
@@ -20,9 +18,7 @@ body {
   line-height: 1.6;
 }
 
-/* =========================
-   CONTAINER
-========================= */
+/*CONTAINER*/
 .container {
   width: 90%;
   max-width: 1000px;
@@ -30,9 +26,7 @@ body {
   padding-bottom: 3rem;
 }
 
-/* =========================
-   HEADER
-========================= */
+/*HEADER*/
 .admin-header {
   display: flex;
   justify-content: space-between;
@@ -54,9 +48,7 @@ body {
   gap: 0.75rem;
 }
 
-/* =========================
-   BUTTONS
-========================= */
+/*BUTTONS*/
 button,
 .btn {
   cursor: pointer;
@@ -96,9 +88,7 @@ button:focus-visible,
   background-color: #d1d5db;
 }
 
-/* =========================
-   EDITOR CARD
-========================= */
+/*EDITOR CARD*/
 .editor-card {
   margin-top: 2rem;
   background-color: white;
@@ -111,9 +101,7 @@ button:focus-visible,
   gap: 1rem;
 }
 
-/* =========================
-   FORM ELEMENTS
-========================= */
+/*FORM ELEMENTS*/
 .form-group {
   display: flex;
   flex-direction: column;
@@ -146,9 +134,7 @@ textarea:focus {
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
 }
 
-/* =========================
-   TOOLBAR
-========================= */
+/*TOOLBAR*/
 .editor-toolbar {
   display: flex;
   gap: 0.5rem;
@@ -171,9 +157,7 @@ textarea:focus {
   color: #374151;
 }
 
-/* =========================
-   IMAGE PREVIEW
-========================= */
+/*IMAGE PREVIEW*/
 #image-preview {
   margin-bottom: 1.25rem;
 }
@@ -186,9 +170,7 @@ textarea:focus {
   margin: 0 auto;
 }
 
-/* =========================
-   CHECKBOX
-========================= */
+/*CHECKBOX*/
 .checkbox-group {
   flex-direction: row;
   align-items: center;
@@ -200,24 +182,18 @@ textarea:focus {
   font-weight: normal;
 }
 
-/* =========================
-   FORM ACTIONS
-========================= */
+/*FORM ACTIONS*/
 .form-actions {
   margin-top: 1.5rem;
 }
 
-/* =========================
-   VALIDATION
-========================= */
+/*VALIDATION*/
 .validation-message {
   margin-top: 0.75rem;
   color: #b91c1c;
 }
 
-/* =========================
-   POSTS (ADMIN HOME)
-========================= */
+/*POSTS (ADMIN HOME)*/
 .post-card {
   background-color: #fff;
   border: 1px solid #e5e7eb;
@@ -301,9 +277,7 @@ textarea:focus {
   background-color: #1d4ed8;
 }
 
-/* =========================
-   COMMENTS (ADMIN)
-========================= */
+/*COMMENTS (ADMIN)*/
 .comments-container {
   margin-top: 0.75rem;
   padding-left: 0.5rem;
@@ -347,9 +321,7 @@ textarea:focus {
   gap: 0.25rem;
 }
 
-/* =========================
-   RESPONSIVE TABLET
-========================= */
+/*RESPONSIVE TABLET*/
 @media (max-width: 768px) {
   .admin-header {
     flex-direction: column;
@@ -367,9 +339,7 @@ textarea:focus {
   }
 }
 
-/* =========================
-   RESPONSIVE MOBILE
-========================= */
+/*RESPONSIVE MOBILE*/
 @media (max-width: 480px) {
   h1 {
     font-size: 1.6rem;

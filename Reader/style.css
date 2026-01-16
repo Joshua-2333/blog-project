@@ -1,6 +1,5 @@
-/* =========================
-   BASE / RESET
-========================= */
+/*Reader/style.css*/
+/*BASE / RESET*/
 *,
 *::before,
 *::after {
@@ -17,9 +16,7 @@ body {
   line-height: 1.6;
 }
 
-/* =========================
-   CONTAINER
-========================= */
+/*CONTAINER*/
 .container {
   max-width: 900px;
   margin: 2rem auto;
@@ -32,9 +29,7 @@ body {
   gap: 1.5rem;
 }
 
-/* =========================
-   HEADER
-========================= */
+/*HEADER*/
 .home-header {
   display: flex;
   justify-content: space-between;
@@ -54,9 +49,7 @@ body {
   gap: 0.5rem;
 }
 
-/* =========================
-   LINKS / BUTTONS
-========================= */
+/*LINKS / BUTTONS*/
 a, .btn {
   color: #fff;
   background-color: #005fcc;
@@ -78,9 +71,7 @@ a:focus, .btn:focus {
   outline-offset: 2px;
 }
 
-/* =========================
-   INTRO / HERO
-========================= */
+/*INTRO / HERO*/
 .intro {
   background: linear-gradient(135deg, #005fcc, #003b82);
   color: #fff;
@@ -99,18 +90,14 @@ a:focus, .btn:focus {
   opacity: 0.95;
 }
 
-/* =========================
-   POSTS SECTION
-========================= */
+/*POSTS SECTION*/
 #posts-section {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
 }
 
-/* =========================
-   POST CARDS
-========================= */
+/*POST CARDS*/
 .post-card {
   background: #fefefe;
   border-radius: 8px;
@@ -138,9 +125,7 @@ a:focus, .btn:focus {
   color: #666;
 }
 
-/* =========================
-   POST IMAGE (FIXED)
-========================= */
+/*POST IMAGE*/
 .post-card img {
   width: 100%;
   max-height: 350px;
@@ -149,9 +134,7 @@ a:focus, .btn:focus {
   border: 1px solid #ddd;
 }
 
-/* =========================
-   MODAL
-========================= */
+/*MODAL*/
 .modal {
   position: fixed;
   inset: 0;
@@ -203,9 +186,7 @@ a:focus, .btn:focus {
 .close:hover { color: #005fcc; }
 .close:focus { outline: 3px solid #005fcc; outline-offset: 2px; }
 
-/* =========================
-   COMMENTS
-========================= */
+/*COMMENTS*/
 #comments-section {
   display: flex;
   flex-direction: column;
@@ -222,9 +203,7 @@ a:focus, .btn:focus {
   color: #444;
 }
 
-/* =========================
-   INPUTS / TEXTAREAS
-========================= */
+/*INPUTS / TEXTAREAS*/
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -242,9 +221,7 @@ input:focus, textarea:focus {
   box-shadow: 0 0 0 2px rgba(0,95,204,0.2);
 }
 
-/* =========================
-   PASSWORD WRAPPER
-========================= */
+/*PASSWORD WRAPPER*/
 .password-wrapper {
   position: relative;
   display: flex;
@@ -263,9 +240,7 @@ input:focus, textarea:focus {
   color: #666;
 }
 
-/* =========================
-   ACTION BUTTONS
-========================= */
+/*ACTION BUTTONS*/
 button {
   cursor: pointer;
   padding: 0.6rem 1.2rem;
@@ -282,9 +257,7 @@ button:hover {
   transform: translateY(-1px);
 }
 
-/* =========================
-   VALIDATION MESSAGES
-========================= */
+/*VALIDATION MESSAGES*/
 #login-message,
 #signup-message,
 #comment-message {
@@ -293,9 +266,7 @@ button:hover {
   margin-top: 0.5rem;
 }
 
-/* =========================
-   PROFILE PAGE
-========================= */
+/*PROFILE PAGE*/
 .profile-container {
   max-width: 600px;
   margin: 2rem auto;
@@ -317,9 +288,7 @@ button:hover {
   color: #005fcc;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
+/*RESPONSIVE*/
 @media (max-width: 768px) {
   .container { margin: 1rem; padding: 1rem; }
   .home-header { flex-direction: column; align-items: flex-start; }

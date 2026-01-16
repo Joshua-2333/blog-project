@@ -5,7 +5,7 @@ const modal = document.getElementById("post-modal");
 const closeBtn = document.getElementById("close-modal");
 const modalTitle = document.getElementById("modal-title");
 const modalMeta = document.getElementById("modal-meta");
-const modalTextContent = document.getElementById("modal-content"); // renamed for clarity
+const modalTextContent = document.getElementById("modal-content"); 
 
 const commentsSection = document.getElementById("comments-section");
 const commentInput = document.getElementById("comment-input");
@@ -17,7 +17,7 @@ const loginRequired = document.getElementById("login-required");
 let currentPostId = null;
 let postImageEl = null; // image element for modal
 
-/* ---------------- OPEN MODAL ---------------- */
+/*OPEN MODAL*/
 export async function openModal(postId) {
   currentPostId = postId;
   modal.hidden = false;
@@ -31,7 +31,7 @@ export async function openModal(postId) {
   await loadComments();
 }
 
-/* ---------------- CLOSE MODAL ---------------- */
+/*CLOSE MODAL*/
 function closeModal() {
   modal.hidden = true;
   document.body.style.overflow = "";
@@ -52,12 +52,12 @@ function closeModal() {
 
 if (closeBtn) closeBtn.addEventListener("click", closeModal);
 
-/* ---------------- CLOSE ON OUTSIDE CLICK ---------------- */
+/*CLOSE ON OUTSIDE CLICK*/
 modal.addEventListener("click", (e) => {
   if (e.target === modal) closeModal();
 });
 
-/* ---------------- LOAD POST ---------------- */
+/*LOAD POST*/
 async function loadPost() {
   try {
     const res = await fetch(`${BASE_URL}/posts/${currentPostId}`);
@@ -103,7 +103,7 @@ async function loadPost() {
   }
 }
 
-/* ---------------- LOAD COMMENTS ---------------- */
+/*LOAD COMMENTS*/
 async function loadComments() {
   commentsSection.innerHTML = "";
   try {
@@ -127,7 +127,7 @@ async function loadComments() {
   }
 }
 
-/* ---------------- SUBMIT COMMENT ---------------- */
+/*SUBMIT COMMENT*/
 if (submitCommentBtn) {
   submitCommentBtn.addEventListener("click", async () => {
     const JWT = localStorage.getItem("jwt");

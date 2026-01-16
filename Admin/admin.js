@@ -3,30 +3,30 @@ const BASE_URL = "http://localhost:3000/api";
 const JWT = localStorage.getItem("jwt");
 const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-/* ---------------- AUTH GUARD ---------------- */
+/*AUTH GUARD*/
 if (!JWT || user.role !== "ADMIN") {
   alert("Admins only");
   window.location.href = "/Reader/index.html";
 }
 
-/* ---------------- DOM ---------------- */
+/*DOM*/
 const logoutBtn = document.getElementById("logout-btn");
 const newPostBtn = document.getElementById("new-post-btn");
 const postsList = document.getElementById("posts-list");
 const loadingPosts = document.getElementById("loading-posts");
 
-/* ---------------- LOGOUT ---------------- */
+/*LOGOUT */
 logoutBtn.addEventListener("click", () => {
   localStorage.clear();
   window.location.href = "/Reader/index.html";
 });
 
-/* ---------------- NAV ---------------- */
+/*NAV*/
 newPostBtn.addEventListener("click", () => {
   window.location.href = "new-post.html";
 });
 
-/* ---------------- FETCH POSTS ---------------- */
+/*FETCH POSTS*/
 async function fetchPosts() {
   postsList.innerHTML = "";
   loadingPosts.hidden = false;
@@ -85,7 +85,7 @@ async function fetchPosts() {
   }
 }
 
-/* ---------------- POST ACTIONS ---------------- */
+/*POST ACTIONS*/
 function setupButtons() {
   // Delete & toggle
   document.querySelectorAll(".delete-btn").forEach((btn) => {
@@ -202,5 +202,5 @@ function setupButtons() {
   });
 }
 
-/* ---------------- INIT ---------------- */
+/*INIT*/
 fetchPosts();

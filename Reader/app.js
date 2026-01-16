@@ -4,7 +4,7 @@ import { openModal } from "./modal.js";
 const BASE_URL = "http://localhost:3000/api";
 let JWT = localStorage.getItem("jwt");
 
-/* ---------------- DOM ---------------- */
+/*DOM*/
 const homeSection = document.getElementById("home-section");
 const loginSection = document.getElementById("login-section");
 const signupSection = document.getElementById("signup-section");
@@ -32,7 +32,7 @@ const signupMessage = document.getElementById("signup-message");
 const goToSignupLink = document.getElementById("go-to-signup");
 const goToLoginLink = document.getElementById("go-to-login");
 
-/* ---------------- VIEW HELPERS ---------------- */
+/*VIEW HELPERS*/
 const hideAll = () => {
   homeSection.hidden = true;
   loginSection.hidden = true;
@@ -66,7 +66,7 @@ const showLogin = () => {
   loginSection.hidden = false;
 };
 
-/* ---------------- NAV ---------------- */
+/* NAV*/
 homeLink.addEventListener("click", e => {
   e.preventDefault();
   JWT ? showUserHome() : showPublicHome();
@@ -89,7 +89,7 @@ goToLoginLink.addEventListener("click", e => {
   showLogin();
 });
 
-/* ---------------- POSTS ---------------- */
+/*POSTS*/
 async function fetchPosts() {
   postsSection.innerHTML = "<p>Loading posts…</p>";
 
@@ -148,7 +148,7 @@ async function fetchPosts() {
   }
 }
 
-/* ---------------- LOGIN ---------------- */
+/*LOGIN*/
 loginBtn.addEventListener("click", async () => {
   loginMessage.textContent = "";
 
@@ -190,14 +190,14 @@ loginBtn.addEventListener("click", async () => {
   }
 });
 
-/* ---------------- LOGOUT ---------------- */
+/*LOGOUT*/
 logoutBtn.addEventListener("click", () => {
   localStorage.clear();
   JWT = null;
   showPublicHome();
 });
 
-/* ---------------- INIT ---------------- */
+/*INIT*/
 (function init() {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
 

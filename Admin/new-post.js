@@ -3,12 +3,12 @@ const BASE_URL = "http://localhost:3000/api";
 const JWT = localStorage.getItem("jwt");
 const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-/* ---------------- AUTH GUARD ---------------- */
+/*AUTH GUARD*/
 if (!JWT || user.role !== "ADMIN") {
   window.location.href = "../Reader/index.html";
 }
 
-/* ---------------- DOM ---------------- */
+/*DOM*/
 const titleInput = document.getElementById("post-title");
 const contentInput = document.getElementById("post-content");
 const publishedInput = document.getElementById("post-published");
@@ -23,7 +23,7 @@ const imageInput = document.getElementById("image-input");
 const imagePreview = document.getElementById("image-preview");
 const previewImg = document.getElementById("preview-img");
 
-/* ---------------- NAV ---------------- */
+/*NAV*/
 backBtn.addEventListener("click", () => {
   window.location.href = "admin.html";
 });
@@ -33,7 +33,7 @@ logoutBtn.addEventListener("click", () => {
   window.location.href = "../Reader/index.html";
 });
 
-/* ---------------- ADD IMAGE ---------------- */
+/*ADD IMAGE*/
 addImageBtn.addEventListener("click", () => {
   imageInput.click();
 });
@@ -59,7 +59,7 @@ imageInput.addEventListener("change", () => {
   reader.readAsDataURL(file);
 });
 
-/* ---------------- CREATE POST ---------------- */
+/*CREATE POST*/
 createBtn.addEventListener("click", async () => {
   messageEl.textContent = "";
 
