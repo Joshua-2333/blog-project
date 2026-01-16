@@ -1,10 +1,11 @@
 // Reader/app.js
 import { openModal } from "./modal.js";
 
+// API base (local dev)
 const BASE_URL = "http://localhost:3000/api";
 let JWT = localStorage.getItem("jwt");
 
-/*DOM*/
+/*DOM ELEMENTS*/
 const homeSection = document.getElementById("home-section");
 const loginSection = document.getElementById("login-section");
 const signupSection = document.getElementById("signup-section");
@@ -21,6 +22,7 @@ const loginBtn = document.getElementById("login-btn");
 const usernameOrEmailInput = document.getElementById("usernameOrEmail");
 const passwordInput = document.getElementById("password");
 const loginMessage = document.getElementById("login-message");
+const toggleLoginPassword = document.getElementById("toggleLoginPassword");
 
 /* Signup */
 const signupBtn = document.getElementById("signup-btn");
@@ -28,6 +30,7 @@ const signupUsername = document.getElementById("signup-username");
 const signupEmail = document.getElementById("signup-email");
 const signupPassword = document.getElementById("signup-password");
 const signupMessage = document.getElementById("signup-message");
+const toggleSignupPassword = document.getElementById("toggleSignupPassword");
 
 const goToSignupLink = document.getElementById("go-to-signup");
 const goToLoginLink = document.getElementById("go-to-login");
@@ -66,7 +69,7 @@ const showLogin = () => {
   loginSection.hidden = false;
 };
 
-/* NAV*/
+/*NAVIGATION*/
 homeLink.addEventListener("click", e => {
   e.preventDefault();
   JWT ? showUserHome() : showPublicHome();
@@ -89,6 +92,25 @@ goToLoginLink.addEventListener("click", e => {
   showLogin();
 });
 
+/*PASSWORD TOGGLE*/
+function togglePassword(input, icon) {
+  if (input.type === "password") {
+    input.type = "text";
+    icon.textContent = "visibility_off";
+  } else {
+    input.type = "password";
+    icon.textContent = "visibility";
+  }
+}
+
+toggleLoginPassword.addEventListener("click", () =>
+  togglePassword(passwordInput, toggleLoginPassword)
+);
+
+toggleSignupPassword.addEventListener("click", () =>
+  togglePassword(signupPassword, toggleSignupPassword)
+);
+
 /*POSTS*/
 async function fetchPosts() {
   postsSection.innerHTML = "<p>Loading posts…</p>";
@@ -99,7 +121,8 @@ async function fetchPosts() {
 
     if (res.ok) {
       posts = await res.json();
-      // Only keep Admin posts (id = 3)
+
+      // Only show Admin posts (Admin user id = 3)
       posts = posts.filter(post => post.author?.id === 3);
     }
 
@@ -111,15 +134,18 @@ async function fetchPosts() {
     }
 
     for (const post of posts) {
-      // Fetch comment count for this post
       let commentCount = 0;
+
+      // Get comment count for each post
       try {
         const cRes = await fetch(`${BASE_URL}/comments?postId=${post.id}`);
         if (cRes.ok) {
           const comments = await cRes.json();
           commentCount = comments.length;
         }
-      } catch {}
+      } catch {
+        commentCount = 0;
+      }
 
       const card = document.createElement("div");
       card.className = "post-card";
@@ -127,7 +153,7 @@ async function fetchPosts() {
       card.innerHTML = `
         <h3>${post.title}</h3>
         <p class="post-meta">
-          By ${post.author.username} • 
+          By ${post.author.username} •
           ${new Date(post.createdAt).toLocaleDateString()} •
           ${commentCount} comment${commentCount !== 1 ? "s" : ""}
         </p>
@@ -143,7 +169,7 @@ async function fetchPosts() {
       postsSection.appendChild(card);
     }
 
-  } catch (err) {
+  } catch {
     postsSection.innerHTML = "<p>Error loading posts.</p>";
   }
 }
@@ -151,6 +177,11 @@ async function fetchPosts() {
 /*LOGIN*/
 loginBtn.addEventListener("click", async () => {
   loginMessage.textContent = "";
+
+  if (!usernameOrEmailInput.value || !passwordInput.value) {
+    loginMessage.textContent = "Username/email and password are required";
+    return;
+  }
 
   try {
     const res = await fetch(`${BASE_URL}/auth/login`, {
@@ -169,16 +200,17 @@ loginBtn.addEventListener("click", async () => {
       return;
     }
 
-    // Store JWT and user object
+    // Save session
     localStorage.setItem("jwt", data.token);
     localStorage.setItem("user", JSON.stringify({
       id: data.user.id,
       username: data.user.username,
-      role: data.user.role
+      role: data.user.role,
     }));
+
     JWT = data.token;
 
-    // Redirect based on role
+    // Redirect admin
     if (data.user.role === "ADMIN") {
       window.location.href = "/Admin/admin.html";
     } else {
@@ -187,6 +219,45 @@ loginBtn.addEventListener("click", async () => {
 
   } catch {
     loginMessage.textContent = "Login failed. Try again.";
+  }
+});
+
+/*SIGNUP*/
+signupBtn.addEventListener("click", async () => {
+  signupMessage.textContent = "";
+
+  if (!signupUsername.value || !signupPassword.value) {
+    signupMessage.textContent = "Username and password are required";
+    return;
+  }
+
+  try {
+    const res = await fetch(`${BASE_URL}/auth/signup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: signupUsername.value,
+        email: signupEmail.value || null,
+        password: signupPassword.value,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      signupMessage.textContent = data.message || "Signup failed";
+      return;
+    }
+
+    signupMessage.style.color = "green";
+    signupMessage.textContent = "Account created! You can now log in.";
+
+    setTimeout(() => {
+      showLogin();
+    }, 1000);
+
+  } catch {
+    signupMessage.textContent = "Signup failed. Try again.";
   }
 });
 
