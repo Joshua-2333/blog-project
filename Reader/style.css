@@ -1,5 +1,3 @@
-/*Reader/style.css*/
-
 /* =========================
    BASE / RESET
 ========================= */
@@ -56,6 +54,9 @@ body {
   gap: 0.5rem;
 }
 
+/* =========================
+   LINKS / BUTTONS
+========================= */
 a, .btn {
   color: #fff;
   background-color: #005fcc;
@@ -78,23 +79,46 @@ a:focus, .btn:focus {
 }
 
 /* =========================
-   POST CARDS
+   INTRO / HERO
+========================= */
+.intro {
+  background: linear-gradient(135deg, #005fcc, #003b82);
+  color: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.intro h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.6rem;
+}
+
+.intro p {
+  margin: 0;
+  font-size: 1rem;
+  opacity: 0.95;
+}
+
+/* =========================
+   POSTS SECTION
 ========================= */
 #posts-section {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
+/* =========================
+   POST CARDS
+========================= */
 .post-card {
   background: #fefefe;
   border-radius: 8px;
   padding: 1rem 1.2rem;
   border: 1px solid #ddd;
-  cursor: pointer;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.6rem;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
@@ -103,36 +127,26 @@ a:focus, .btn:focus {
   transform: translateY(-2px);
 }
 
-.post-card:focus {
-  outline: 3px solid #005fcc;
-  outline-offset: 2px;
-}
-
 .post-card h3 { 
   margin: 0; 
   font-size: 1.25rem;
   color: #005fcc;
 }
+
 .post-card .post-meta {
   font-size: 0.85rem;
   color: #666;
 }
-.post-card .post-preview {
-  font-size: 0.95rem;
-  color: #333;
-  margin-top: 0.3rem;
-}
 
 /* =========================
-   POST IMAGE
+   POST IMAGE (FIXED)
 ========================= */
-.post-card img.post-image {
-  max-width: 100%;
+.post-card img {
+  width: 100%;
+  max-height: 350px;
+  object-fit: cover;
   border-radius: 8px;
   border: 1px solid #ddd;
-  display: block;
-  margin: 0.5rem 0;
-  object-fit: cover;
 }
 
 /* =========================
@@ -165,12 +179,12 @@ a:focus, .btn:focus {
   position: relative;
 }
 
-/* ---------------- IMAGE IN MODAL ---------------- */
+/* IMAGE IN MODAL */
 .modal-post-image {
   max-width: 100%;
+  max-height: 450px;
   border-radius: 8px;
   border: 1px solid #ddd;
-  margin-bottom: 1rem;
   object-fit: contain;
 }
 
@@ -185,10 +199,13 @@ a:focus, .btn:focus {
   cursor: pointer;
   color: #222;
 }
+
 .close:hover { color: #005fcc; }
 .close:focus { outline: 3px solid #005fcc; outline-offset: 2px; }
 
-/* COMMENTS */
+/* =========================
+   COMMENTS
+========================= */
 #comments-section {
   display: flex;
   flex-direction: column;
@@ -197,6 +214,7 @@ a:focus, .btn:focus {
   background: #f9f9f9;
   border-radius: 5px;
 }
+
 .comment {
   padding: 0.5rem;
   border-top: 1px solid #ddd;
@@ -207,13 +225,15 @@ a:focus, .btn:focus {
 /* =========================
    INPUTS / TEXTAREAS
 ========================= */
-input[type="text"], input[type="email"], input[type="password"], textarea {
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
   width: 100%;
   padding: 0.55rem 0.7rem;
   border-radius: 5px;
   border: 1px solid #ccc;
   font-size: 0.95rem;
-  transition: border 0.2s, box-shadow 0.2s;
 }
 
 input:focus, textarea:focus {
@@ -223,7 +243,7 @@ input:focus, textarea:focus {
 }
 
 /* =========================
-   PASSWORD WRAPPER + ICON
+   PASSWORD WRAPPER
 ========================= */
 .password-wrapper {
   position: relative;
@@ -232,7 +252,7 @@ input:focus, textarea:focus {
 }
 
 .password-wrapper input {
-  padding-right: 2.5rem; /* space for icon */
+  padding-right: 2.5rem;
 }
 
 .password-wrapper .material-symbols-outlined {
@@ -241,24 +261,13 @@ input:focus, textarea:focus {
   cursor: pointer;
   font-size: 1.3rem;
   color: #666;
-  user-select: none;
-}
-
-.password-wrapper .material-symbols-outlined:hover,
-.password-wrapper .material-symbols-outlined:focus {
-  color: #005fcc;
-  outline: 2px solid #005fcc;
-  outline-offset: 2px;
 }
 
 /* =========================
-   BUTTONS
+   ACTION BUTTONS
 ========================= */
-button, .btn {
+button {
   cursor: pointer;
-}
-
-#submit-comment, #create-btn, #login-btn, #signup-btn, #logout-btn {
   padding: 0.6rem 1.2rem;
   border-radius: 5px;
   border: none;
@@ -268,45 +277,20 @@ button, .btn {
   transition: background 0.2s ease, transform 0.1s ease;
 }
 
-#submit-comment:hover, #create-btn:hover, #login-btn:hover, #signup-btn:hover, #logout-btn:hover {
+button:hover {
   background: #0046a5;
   transform: translateY(-1px);
-}
-
-#submit-comment:focus, #create-btn:focus, #login-btn:focus, #signup-btn:focus, #logout-btn:focus {
-  outline: 3px solid #002f6c;
-  outline-offset: 2px;
 }
 
 /* =========================
    VALIDATION MESSAGES
 ========================= */
-#login-message, #signup-message, #editor-message, #comment-message {
+#login-message,
+#signup-message,
+#comment-message {
   font-size: 0.9rem;
   color: #b00020;
-  margin-top: 0.75rem;
-  line-height: 1.4;
-}
-
-/* Input states */
-input.invalid {
-  border-color: #b00020;
-  background: #fff5f5;
-}
-
-input.valid {
-  border-color: #1b7f3b;
-}
-
-/* =========================
-   SCREEN READER ONLY
-========================= */
-.sr-only {
-  position: absolute;
-  width: 1px; height: 1px;
-  padding: 0; margin: -1px;
-  overflow: hidden; clip: rect(0,0,0,0);
-  white-space: nowrap; border: 0;
+  margin-top: 0.5rem;
 }
 
 /* =========================
@@ -319,9 +303,6 @@ input.valid {
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
 }
 
 .profile-header {
@@ -336,57 +317,18 @@ input.valid {
   color: #005fcc;
 }
 
-.profile-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  font-size: 1rem;
-  color: #333;
-}
-
-.profile-info span {
-  font-weight: 500;
-}
-
-.profile-comments {
-  margin-top: 1rem;
-}
-
-.profile-comments h3 {
-  font-size: 1.2rem;
-  color: #005fcc;
-  margin-bottom: 0.5rem;
-}
-
-.profile-comments .comment {
-  background: #f9f9f9;
-  border-radius: 5px;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-}
-
 /* =========================
-   RESPONSIVE TABLET
+   RESPONSIVE
 ========================= */
 @media (max-width: 768px) {
   .container { margin: 1rem; padding: 1rem; }
-  button, .btn { width: 100%; align-self: stretch; }
-  .post-card { padding: 0.85rem; }
-  .password-wrapper .material-symbols-outlined { right: 0.4rem; font-size: 1.2rem; }
   .home-header { flex-direction: column; align-items: flex-start; }
-  .modal-content { padding: 1.2rem; max-width: 90%; }
-  .modal-post-image { max-height: 400px; object-fit: contain; }
+  button, .btn { width: 100%; }
+  .post-card img { max-height: 280px; }
 }
 
-/* =========================
-   RESPONSIVE MOBILE
-========================= */
 @media (max-width: 480px) {
   h1 { font-size: 1.6rem; }
   h2 { font-size: 1.3rem; }
-  h3 { font-size: 1.1rem; }
-  textarea, input[type="text"], input[type="email"], input[type="password"] { font-size: 0.95rem; }
-  button, .btn { font-size: 0.95rem; }
-  .post-card img.post-image { max-height: 300px; object-fit: cover; }
-  .modal-post-image { max-height: 250px; object-fit: contain; }
+  .post-card img { max-height: 220px; }
 }

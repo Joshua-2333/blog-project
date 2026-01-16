@@ -43,7 +43,7 @@ function closeModal() {
     postImageEl = null;
   }
 
-  // Clear previous text
+  // Clear previous text and comments
   modalTextContent.textContent = "";
   commentsSection.innerHTML = "";
   commentInput.value = "";
@@ -76,12 +76,6 @@ async function loadPost() {
 
     modalTitle.textContent = post.title;
     modalMeta.textContent = `By ${post.author.username}`;
-
-    // Remove previous image if exists
-    if (postImageEl) {
-      postImageEl.remove();
-      postImageEl = null;
-    }
 
     // Render image if available
     if (post.imageUrl) {
@@ -155,7 +149,7 @@ if (submitCommentBtn) {
       if (!res.ok) throw new Error("Failed to submit comment");
 
       commentInput.value = "";
-      loadComments();
+      loadComments(); // reload comments after submit
     } catch (err) {
       commentMessage.textContent = err.message;
     }

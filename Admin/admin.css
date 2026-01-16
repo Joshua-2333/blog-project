@@ -1,4 +1,4 @@
-/*Admin.css*/
+/* Admin.css */
 
 /* =========================
    BASE RESET
@@ -290,6 +290,61 @@ textarea:focus {
 
 .delete-btn:hover {
   background-color: #dc2626;
+}
+
+.view-comments-btn {
+  background-color: #2563eb;
+  color: white;
+}
+
+.view-comments-btn:hover {
+  background-color: #1d4ed8;
+}
+
+/* =========================
+   COMMENTS (ADMIN)
+========================= */
+.comments-container {
+  margin-top: 0.75rem;
+  padding-left: 0.5rem;
+  border-left: 2px solid #e5e7eb;
+}
+
+.comment {
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px dashed #e5e7eb;
+}
+
+.comment textarea.reply-input {
+  width: 100%;
+  margin-top: 0.25rem;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.comment button.reply-btn {
+  margin-top: 0.25rem;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.85rem;
+  border-radius: 5px;
+  background-color: #2563eb;
+  color: white;
+}
+
+.comment button.reply-btn:hover {
+  background-color: #1d4ed8;
+}
+
+.comment .replies {
+  margin-top: 0.25rem;
+  margin-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 /* =========================

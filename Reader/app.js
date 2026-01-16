@@ -93,57 +93,101 @@ goToLoginLink.addEventListener("click", e => {
 async function fetchPosts() {
   postsSection.innerHTML = "<p>Loading posts…</p>";
 
-  const res = await fetch(`${BASE_URL}/posts`);
-  const posts = await res.json();
+  try {
+    const res = await fetch(`${BASE_URL}/posts`);
+    let posts = [];
 
-  const adminPosts = posts.filter(p => p.author.id === 3);
+    if (res.ok) {
+      posts = await res.json();
+      // Only keep Admin posts (id = 3)
+      posts = posts.filter(post => post.author?.id === 3);
+    }
 
-  postsSection.innerHTML = "";
+    postsSection.innerHTML = "";
 
-  adminPosts.forEach(post => {
-    const div = document.createElement("div");
-    div.className = "post-card";
+    if (!posts.length) {
+      postsSection.innerHTML = "<p>No articles available.</p>";
+      return;
+    }
 
-    div.innerHTML = `
-      <h3>${post.title}</h3>
-      <p>By ${post.author.username}</p>
-    `;
+    for (const post of posts) {
+      // Fetch comment count for this post
+      let commentCount = 0;
+      try {
+        const cRes = await fetch(`${BASE_URL}/comments?postId=${post.id}`);
+        if (cRes.ok) {
+          const comments = await cRes.json();
+          commentCount = comments.length;
+        }
+      } catch {}
 
-    const btn = document.createElement("button");
-    btn.textContent = "Read";
-    btn.className = "btn";
-    btn.onclick = () => openModal(post.id);
+      const card = document.createElement("div");
+      card.className = "post-card";
 
-    div.appendChild(btn);
-    postsSection.appendChild(div);
-  });
+      card.innerHTML = `
+        <h3>${post.title}</h3>
+        <p class="post-meta">
+          By ${post.author.username} • 
+          ${new Date(post.createdAt).toLocaleDateString()} •
+          ${commentCount} comment${commentCount !== 1 ? "s" : ""}
+        </p>
+        <p>${post.content.slice(0, 160)}...</p>
+      `;
+
+      const btn = document.createElement("button");
+      btn.textContent = "Read Article";
+      btn.className = "btn";
+      btn.onclick = () => openModal(post.id);
+
+      card.appendChild(btn);
+      postsSection.appendChild(card);
+    }
+
+  } catch (err) {
+    postsSection.innerHTML = "<p>Error loading posts.</p>";
+  }
 }
 
 /* ---------------- LOGIN ---------------- */
 loginBtn.addEventListener("click", async () => {
   loginMessage.textContent = "";
 
-  const res = await fetch(`${BASE_URL}/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      usernameOrEmail: usernameOrEmailInput.value,
-      password: passwordInput.value,
-    }),
-  });
+  try {
+    const res = await fetch(`${BASE_URL}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        usernameOrEmail: usernameOrEmailInput.value,
+        password: passwordInput.value,
+      }),
+    });
 
-  const data = await res.json();
+    const data = await res.json();
 
-  if (!res.ok) {
-    loginMessage.textContent = data.message;
-    return;
+    if (!res.ok) {
+      loginMessage.textContent = data.message || "Login failed";
+      return;
+    }
+
+    // Store JWT and user object
+    localStorage.setItem("jwt", data.token);
+    localStorage.setItem("user", JSON.stringify({
+      id: data.user.id,
+      username: data.user.username,
+      role: data.user.role
+    }));
+    JWT = data.token;
+
+    // Redirect based on role
+    if (data.user.role === "ADMIN") {
+      window.location.href = "/Admin/admin.html";
+    } else {
+      showUserHome();
+    }
+
+  } catch {
+    loginMessage.textContent = "Login failed. Try again.";
   }
-
-  localStorage.setItem("jwt", data.token);
-  localStorage.setItem("user", JSON.stringify(data.user));
-  JWT = data.token;
-
-  showUserHome();
 });
 
 /* ---------------- LOGOUT ---------------- */
@@ -155,5 +199,11 @@ logoutBtn.addEventListener("click", () => {
 
 /* ---------------- INIT ---------------- */
 (function init() {
-  JWT ? showUserHome() : showPublicHome();
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+  if (JWT && user.role === "ADMIN") {
+    window.location.href = "/Admin/admin.html";
+  } else {
+    JWT ? showUserHome() : showPublicHome();
+  }
 })();
