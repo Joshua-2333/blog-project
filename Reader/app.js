@@ -1,8 +1,7 @@
 // Reader/app.js
+import { BASE_URL } from "./config.js";
 import { openModal } from "./modal.js";
 
-// API base (local dev)
-const BASE_URL = "http://localhost:3000/api";
 let JWT = localStorage.getItem("jwt");
 
 /*DOM ELEMENTS*/
@@ -70,7 +69,7 @@ const showLogin = () => {
 };
 
 /*NAVIGATION*/
-homeLink.addEventListener("click", e => {
+homeLink.addEventListener("click", (e) => {
   e.preventDefault();
   JWT ? showUserHome() : showPublicHome();
 });
@@ -81,13 +80,13 @@ profileBtn.addEventListener("click", () => {
   window.location.href = "./profile.html";
 });
 
-goToSignupLink.addEventListener("click", e => {
+goToSignupLink.addEventListener("click", (e) => {
   e.preventDefault();
   hideAll();
   signupSection.hidden = false;
 });
 
-goToLoginLink.addEventListener("click", e => {
+goToLoginLink.addEventListener("click", (e) => {
   e.preventDefault();
   showLogin();
 });
@@ -123,7 +122,7 @@ async function fetchPosts() {
       posts = await res.json();
 
       // Only show Admin posts (Admin user id = 3)
-      posts = posts.filter(post => post.author?.id === 3);
+      posts = posts.filter((post) => post.author?.id === 3);
     }
 
     postsSection.innerHTML = "";
@@ -168,7 +167,6 @@ async function fetchPosts() {
       card.appendChild(btn);
       postsSection.appendChild(card);
     }
-
   } catch {
     postsSection.innerHTML = "<p>Error loading posts.</p>";
   }
@@ -202,11 +200,14 @@ loginBtn.addEventListener("click", async () => {
 
     // Save session
     localStorage.setItem("jwt", data.token);
-    localStorage.setItem("user", JSON.stringify({
-      id: data.user.id,
-      username: data.user.username,
-      role: data.user.role,
-    }));
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        id: data.user.id,
+        username: data.user.username,
+        role: data.user.role,
+      })
+    );
 
     JWT = data.token;
 
@@ -216,7 +217,6 @@ loginBtn.addEventListener("click", async () => {
     } else {
       showUserHome();
     }
-
   } catch {
     loginMessage.textContent = "Login failed. Try again.";
   }
@@ -255,7 +255,6 @@ signupBtn.addEventListener("click", async () => {
     setTimeout(() => {
       showLogin();
     }, 1000);
-
   } catch {
     signupMessage.textContent = "Signup failed. Try again.";
   }

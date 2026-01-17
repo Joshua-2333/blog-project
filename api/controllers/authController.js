@@ -18,7 +18,7 @@ const generateToken = (user) => {
       id: user.id,
       username: user.username,
       email: user.email,
-      role: user.role, // ✅ Include role in token
+      role: user.role,
     },
     JWT_SECRET,
     { expiresIn: "1d" }
@@ -73,7 +73,6 @@ export const registerUser = async (req, res, next) => {
         role: user.role,
       },
       token,
-      redirectTo: user.role === "ADMIN" ? "/Admin/admin.html" : "/Reader/index.html"
     });
   } catch (err) {
     next(err);
@@ -122,7 +121,6 @@ export const loginUser = async (req, res, next) => {
         role: user.role,
       },
       token,
-      redirectTo: user.role === "ADMIN" ? "/Admin/admin.html" : "/Reader/index.html"
     });
   } catch (err) {
     next(err);

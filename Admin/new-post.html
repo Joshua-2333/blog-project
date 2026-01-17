@@ -6,14 +6,8 @@
   <title>New Post</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Admin styles -->
   <link rel="stylesheet" href="admin.css" />
-
-  <!-- Material Icons -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 </head>
 <body>
   <div class="container">
@@ -35,7 +29,6 @@
         />
       </div>
 
-      <!-- EDITOR TOOLBAR -->
       <div class="editor-toolbar">
         <button
           type="button"
@@ -46,12 +39,7 @@
           <span class="material-symbols-outlined">image</span>
         </button>
 
-        <input
-          type="file"
-          id="image-input"
-          accept="image/*"
-          hidden
-        />
+        <input type="file" id="image-input" accept="image/*" hidden />
       </div>
 
       <div class="form-group">
@@ -63,7 +51,6 @@
         ></textarea>
       </div>
 
-      <!-- IMAGE PREVIEW -->
       <div id="image-preview" hidden>
         <p>Image preview:</p>
         <img id="preview-img" alt="Selected image preview" />
@@ -80,14 +67,10 @@
         </button>
       </div>
 
-      <p
-        id="editor-message"
-        class="validation-message"
-        aria-live="polite"
-      ></p>
+      <p id="editor-message" class="validation-message" aria-live="polite"></p>
     </section>
   </div>
 
-  <script type="module" src="new-post.js"></script>
+  <script type="module" src="./new-post.js"></script>
 </body>
 </html>

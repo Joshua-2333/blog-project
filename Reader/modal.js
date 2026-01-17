@@ -1,11 +1,11 @@
 // Reader/modal.js
-const BASE_URL = "http://localhost:3000/api";
+import { BASE_URL } from "./config.js";
 
 const modal = document.getElementById("post-modal");
 const closeBtn = document.getElementById("close-modal");
 const modalTitle = document.getElementById("modal-title");
 const modalMeta = document.getElementById("modal-meta");
-const modalTextContent = document.getElementById("modal-content"); 
+const modalTextContent = document.getElementById("modal-content");
 
 const commentsSection = document.getElementById("comments-section");
 const commentInput = document.getElementById("comment-input");

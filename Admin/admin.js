@@ -1,5 +1,6 @@
 // Admin/admin.js
-const BASE_URL = "http://localhost:3000/api";
+import { BASE_URL } from "./config.js";
+
 const JWT = localStorage.getItem("jwt");
 const user = JSON.parse(localStorage.getItem("user") || "{}");
 
@@ -48,7 +49,6 @@ async function fetchPosts() {
       const div = document.createElement("div");
       div.className = "post-card";
 
-      // Image HTML
       const imageHTML = post.imageUrl
         ? `<img src="${post.imageUrl}" alt="Image for ${post.title}" class="post-image">`
         : "";
@@ -87,7 +87,6 @@ async function fetchPosts() {
 
 /*POST ACTIONS*/
 function setupButtons() {
-  // Delete & toggle
   document.querySelectorAll(".delete-btn").forEach((btn) => {
     btn.addEventListener("click", async () => {
       if (!confirm("Delete this post?")) return;
@@ -115,7 +114,6 @@ function setupButtons() {
     });
   });
 
-  // View comments & reply
   document.querySelectorAll(".view-comments-btn").forEach((btn) => {
     btn.addEventListener("click", async () => {
       const postId = btn.dataset.id;
@@ -123,7 +121,6 @@ function setupButtons() {
       container.style.display = container.style.display === "none" ? "block" : "none";
 
       if (container.innerHTML === "") {
-        // Fetch comments
         try {
           const res = await fetch(`${BASE_URL}/comments?postId=${postId}`, {
             headers: { Authorization: `Bearer ${JWT}` },
@@ -149,7 +146,6 @@ function setupButtons() {
             `;
             container.appendChild(div);
 
-            // Load existing replies if available
             if (c.replies?.length) {
               const repliesDiv = div.querySelector(".replies");
               c.replies.forEach((r) => {
@@ -161,7 +157,6 @@ function setupButtons() {
             }
           });
 
-          // Add reply functionality
           container.querySelectorAll(".reply-btn").forEach((rbtn) => {
             rbtn.addEventListener("click", async () => {
               const commentId = rbtn.dataset.commentId;
@@ -181,7 +176,6 @@ function setupButtons() {
 
                 if (!res.ok) throw new Error("Failed to submit reply");
 
-                // Append reply in UI
                 const repliesDiv = rbtn.nextElementSibling;
                 const rDiv = document.createElement("div");
                 rDiv.style.marginLeft = "1rem";

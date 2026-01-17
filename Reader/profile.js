@@ -1,5 +1,5 @@
 // Reader/profile.js
-const BASE_URL = "http://localhost:3000/api";
+import { BASE_URL } from "./config.js";
 
 const usernameEl = document.getElementById("profile-username");
 const emailEl = document.getElementById("profile-email");
@@ -31,7 +31,7 @@ async function loadComments() {
     }
 
     commentsList.innerHTML = "";
-    comments.forEach(c => {
+    comments.forEach((c) => {
       const div = document.createElement("div");
       div.className = "comment";
       div.innerHTML = `<strong>On post #${c.postId}:</strong> ${c.content}`;
@@ -45,7 +45,7 @@ async function loadComments() {
 loadComments();
 
 // Go back home
-homeLink.addEventListener("click", e => {
+homeLink.addEventListener("click", (e) => {
   e.preventDefault();
   window.location.href = "./index.html";
 });

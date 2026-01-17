@@ -1,5 +1,6 @@
-/*Admion/new-post.js*/
-const BASE_URL = "http://localhost:3000/api";
+// Admin/new-post.js
+import { BASE_URL } from "./config.js";
+
 const JWT = localStorage.getItem("jwt");
 const user = JSON.parse(localStorage.getItem("user") || "{}");
 
