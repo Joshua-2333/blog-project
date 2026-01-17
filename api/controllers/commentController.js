@@ -5,6 +5,7 @@ import prisma from "../prisma/prisma.config.js";
  * GET COMMENTS
  * - Public
  * - Only comments on published posts
+ * - Optional postId filter
  */
 export const getComments = async (req, res, next) => {
   try {
@@ -23,7 +24,17 @@ export const getComments = async (req, res, next) => {
       orderBy: { createdAt: "desc" },
     });
 
-    res.json(comments);
+    // Count unique commenters for the post (if postId provided)
+    let commentersCount = null;
+    if (postId) {
+      const uniqueUsers = new Set(comments.map((c) => c.userId));
+      commentersCount = uniqueUsers.size;
+    }
+
+    res.json({
+      comments,
+      commentersCount,
+    });
   } catch (err) {
     next(err);
   }

@@ -15,7 +15,7 @@ const commentForm = document.getElementById("comment-form");
 const loginRequired = document.getElementById("login-required");
 
 let currentPostId = null;
-let postImageEl = null; // image element for modal
+let postImageEl = null;
 
 /*OPEN MODAL*/
 export async function openModal(postId) {
@@ -37,13 +37,11 @@ function closeModal() {
   document.body.style.overflow = "";
   currentPostId = null;
 
-  // Remove previous image if exists
   if (postImageEl) {
     postImageEl.remove();
     postImageEl = null;
   }
 
-  // Clear previous text and comments
   modalTextContent.textContent = "";
   commentsSection.innerHTML = "";
   commentInput.value = "";
@@ -77,7 +75,6 @@ async function loadPost() {
     modalTitle.textContent = post.title;
     modalMeta.textContent = `By ${post.author.username}`;
 
-    // Render image if available
     if (post.imageUrl) {
       postImageEl = document.createElement("img");
       postImageEl.src = post.imageUrl;
@@ -89,7 +86,6 @@ async function loadPost() {
       modalTextContent.parentNode.insertBefore(postImageEl, modalTextContent);
     }
 
-    // Render text content
     const contentParagraph = document.createElement("p");
     contentParagraph.textContent = post.content;
     contentParagraph.style.whiteSpace = "pre-wrap";
@@ -109,7 +105,9 @@ async function loadComments() {
   try {
     const res = await fetch(`${BASE_URL}/comments?postId=${currentPostId}`);
     if (!res.ok) throw new Error("Error fetching comments");
-    const comments = await res.json();
+
+    const data = await res.json();
+    const comments = data.comments || [];
 
     if (!comments.length) {
       commentsSection.innerHTML = "<p>No comments yet. Be the first to comment!</p>";
@@ -122,6 +120,7 @@ async function loadComments() {
       div.innerHTML = `<strong>${c.user.username}</strong>: ${c.content}`;
       commentsSection.appendChild(div);
     });
+
   } catch (err) {
     commentsSection.innerHTML = `<p>${err.message}</p>`;
   }
@@ -149,7 +148,7 @@ if (submitCommentBtn) {
       if (!res.ok) throw new Error("Failed to submit comment");
 
       commentInput.value = "";
-      loadComments(); // reload comments after submit
+      loadComments();
     } catch (err) {
       commentMessage.textContent = err.message;
     }

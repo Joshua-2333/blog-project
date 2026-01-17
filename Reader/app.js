@@ -134,16 +134,22 @@ async function fetchPosts() {
 
     for (const post of posts) {
       let commentCount = 0;
+      let uniqueCommenters = 0;
 
       // Get comment count for each post
       try {
         const cRes = await fetch(`${BASE_URL}/comments?postId=${post.id}`);
         if (cRes.ok) {
-          const comments = await cRes.json();
+          const data = await cRes.json();
+
+          // updated response format
+          const comments = data.comments || [];
           commentCount = comments.length;
+          uniqueCommenters = data.commentersCount || 0;
         }
       } catch {
         commentCount = 0;
+        uniqueCommenters = 0;
       }
 
       const card = document.createElement("div");
@@ -154,7 +160,8 @@ async function fetchPosts() {
         <p class="post-meta">
           By ${post.author.username} •
           ${new Date(post.createdAt).toLocaleDateString()} •
-          ${commentCount} comment${commentCount !== 1 ? "s" : ""}
+          ${commentCount} comment${commentCount !== 1 ? "s" : ""} •
+          ${uniqueCommenters} unique commenter${uniqueCommenters !== 1 ? "s" : ""}
         </p>
         <p>${post.content.slice(0, 160)}...</p>
       `;
@@ -205,6 +212,7 @@ loginBtn.addEventListener("click", async () => {
       JSON.stringify({
         id: data.user.id,
         username: data.user.username,
+        email: data.user.email,
         role: data.user.role,
       })
     );

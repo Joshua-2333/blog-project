@@ -21,11 +21,31 @@ export const getPosts = async (req, res, next) => {
       where,
       include: {
         author: { select: { id: true, username: true } },
+
+        // ADD COMMENTERS COUNT
+        _count: {
+          select: { comments: true },
+        },
+        comments: {
+          select: {
+            userId: true,
+          },
+        },
       },
       orderBy: { createdAt: "desc" },
     });
 
-    res.json(posts);
+    // Add unique commenters count
+    const postsWithCounts = posts.map((post) => {
+      const uniqueCommenters = new Set(post.comments.map((c) => c.userId));
+      return {
+        ...post,
+        commentersCount: uniqueCommenters.size,
+        commentCount: post._count?.comments ?? 0,
+      };
+    });
+
+    res.json(postsWithCounts);
   } catch (err) {
     next(err);
   }
@@ -59,7 +79,17 @@ export const getPostById = async (req, res, next) => {
       return res.status(403).json({ message: "Not authorized" });
     }
 
-    res.json(post);
+    // ADD COUNTS HERE TOO
+    const commentCount = post.comments.length;
+    const uniqueCommentersCount = new Set(
+      post.comments.map((c) => c.userId)
+    ).size;
+
+    res.json({
+      ...post,
+      commentCount,
+      uniqueCommentersCount,
+    });
   } catch (err) {
     next(err);
   }

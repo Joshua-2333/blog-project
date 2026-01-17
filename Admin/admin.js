@@ -59,6 +59,7 @@ async function fetchPosts() {
           ${post.title} ${!post.published ? "<span class='draft'>Draft</span>" : ""}
         </h3>
         <p>Status: ${post.published ? "Published" : "Draft"}</p>
+        <p>Unique commenters: ${post.commentersCount || 0}</p>
 
         <div class="post-actions">
           <button class="toggle-btn" data-id="${post.id}">

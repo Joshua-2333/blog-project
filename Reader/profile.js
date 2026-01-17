@@ -16,9 +16,9 @@ if (!JWT || !user) {
 
 // Populate user info
 usernameEl.textContent = user.username;
-emailEl.textContent = user.email;
+emailEl.textContent = user.email || "No email saved";
 
-// Fetch user's comments
+/* Fetch user's comments */
 async function loadComments() {
   commentsList.innerHTML = "Loading comments...";
   try {
