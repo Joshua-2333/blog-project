@@ -219,9 +219,8 @@ loginBtn.addEventListener("click", async () => {
 
     JWT = data.token;
 
-    // Redirect admin
+    // Redirect admin ONLY after login
     if (data.user.role === "ADMIN") {
-      // UPDATED: now points to Admin/index.html
       window.location.href = "/Admin/index.html";
     } else {
       showUserHome();
@@ -280,10 +279,7 @@ logoutBtn.addEventListener("click", () => {
 (function init() {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-  if (JWT && user.role === "ADMIN") {
-    // UPDATED: now points to Admin/index.html
-    window.location.href = "/Admin/index.html";
-  } else {
-    JWT ? showUserHome() : showPublicHome();
-  }
+  // IMPORTANT: Reader should NOT auto redirect to Admin
+  // only show Reader if admin is logged in (still)
+  JWT ? showUserHome() : showPublicHome();
 })();
