@@ -2,8 +2,7 @@
 import prisma from "../prisma/prisma.config.js";
 
 /**
- * GET COMMENTS
- * - Public
+ * GET COMMENTS (PUBLIC)
  * - Only comments on published posts
  * - Optional postId filter
  */
@@ -24,17 +23,67 @@ export const getComments = async (req, res, next) => {
       orderBy: { createdAt: "desc" },
     });
 
-    // Count unique commenters for the post (if postId provided)
-    let commentersCount = null;
-    if (postId) {
-      const uniqueUsers = new Set(comments.map((c) => c.userId));
-      commentersCount = uniqueUsers.size;
+    res.json(comments);
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * GET COMMENTS BY USER
+ * - Authenticated
+ * - User sees their own comments
+ * - Admin can see any user's comments
+ */
+export const getCommentsByUser = async (req, res, next) => {
+  try {
+    const userId = parseInt(req.params.userId);
+
+    if (req.user.role !== "ADMIN" && req.user.id !== userId) {
+      return res.status(403).json({ message: "Not authorized" });
     }
 
-    res.json({
-      comments,
-      commentersCount,
+    const comments = await prisma.comment.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        post: {
+          select: {
+            id: true,
+            title: true,
+            published: true,
+          },
+        },
+      },
+      orderBy: { createdAt: "desc" },
     });
+
+    res.json(comments);
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * GET ALL COMMENTS (ADMIN ONLY)
+ * - Includes unpublished posts
+ */
+export const getAllCommentsAdmin = async (req, res, next) => {
+  try {
+    if (req.user.role !== "ADMIN") {
+      return res.status(403).json({ message: "Admins only" });
+    }
+
+    const comments = await prisma.comment.findMany({
+      include: {
+        user: { select: { id: true, username: true } },
+        post: { select: { id: true, title: true, published: true } },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    res.json(comments);
   } catch (err) {
     next(err);
   }
