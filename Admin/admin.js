@@ -7,7 +7,8 @@ const user = JSON.parse(localStorage.getItem("user") || "{}");
 /*AUTH GUARD*/
 if (!JWT || user.role !== "ADMIN") {
   alert("Admins only");
-  window.location.href = "/Reader/index.html";
+  localStorage.clear();
+  window.location.href = "https://blog-project-reader.onrender.com/";
 }
 
 /*DOM*/
@@ -19,7 +20,7 @@ const loadingPosts = document.getElementById("loading-posts");
 /*LOGOUT */
 logoutBtn.addEventListener("click", () => {
   localStorage.clear();
-  window.location.href = "/Reader/index.html";
+  window.location.href = "https://blog-project-reader.onrender.com/";
 });
 
 /*NAV*/
@@ -119,7 +120,8 @@ function setupButtons() {
     btn.addEventListener("click", async () => {
       const postId = btn.dataset.id;
       const container = document.getElementById(`comments-${postId}`);
-      container.style.display = container.style.display === "none" ? "block" : "none";
+      container.style.display =
+        container.style.display === "none" ? "block" : "none";
 
       if (container.innerHTML === "") {
         try {
