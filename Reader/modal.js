@@ -17,7 +17,6 @@ const loginRequired = document.getElementById("login-required");
 let currentPostId = null;
 let postImageEl = null;
 
-/*OPEN MODAL*/
 export async function openModal(postId) {
   currentPostId = postId;
   modal.hidden = false;
@@ -31,7 +30,6 @@ export async function openModal(postId) {
   await loadComments();
 }
 
-/*CLOSE MODAL*/
 function closeModal() {
   modal.hidden = true;
   document.body.style.overflow = "";
@@ -50,19 +48,16 @@ function closeModal() {
 
 if (closeBtn) closeBtn.addEventListener("click", closeModal);
 
-/*CLOSE ON OUTSIDE CLICK*/
 modal.addEventListener("click", (e) => {
   if (e.target === modal) closeModal();
 });
 
-/*LOAD POST*/
 async function loadPost() {
   try {
     const res = await fetch(`${BASE_URL}/posts/${currentPostId}`);
     if (!res.ok) throw new Error("Post not found");
     const post = await res.json();
 
-    // Only allow modal for admin id = 3
     if (post.author.id !== 3) {
       modalTitle.textContent = "Unauthorized";
       modalMeta.textContent = "";
@@ -99,15 +94,13 @@ async function loadPost() {
   }
 }
 
-/*LOAD COMMENTS*/
 async function loadComments() {
   commentsSection.innerHTML = "";
   try {
     const res = await fetch(`${BASE_URL}/comments?postId=${currentPostId}`);
     if (!res.ok) throw new Error("Error fetching comments");
 
-    const data = await res.json();
-    const comments = data.comments || [];
+    const comments = await res.json(); // <-- array
 
     if (!comments.length) {
       commentsSection.innerHTML = "<p>No comments yet. Be the first to comment!</p>";
@@ -120,13 +113,11 @@ async function loadComments() {
       div.innerHTML = `<strong>${c.user.username}</strong>: ${c.content}`;
       commentsSection.appendChild(div);
     });
-
   } catch (err) {
     commentsSection.innerHTML = `<p>${err.message}</p>`;
   }
 }
 
-/*SUBMIT COMMENT*/
 if (submitCommentBtn) {
   submitCommentBtn.addEventListener("click", async () => {
     const JWT = localStorage.getItem("jwt");

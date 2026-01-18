@@ -72,12 +72,6 @@ async function seed() {
     ];
 
     for (const post of defaultPosts) {
-      const existing = await prisma.post.findUnique({
-        where: { id: 0 }, // temporary, replaced below
-      });
-    }
-
-    for (const post of defaultPosts) {
       // Check if post already exists by title
       const existing = await prisma.post.findFirst({
         where: { title: post.title },

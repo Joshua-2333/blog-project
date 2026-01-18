@@ -26,7 +26,8 @@ const previewImg = document.getElementById("preview-img");
 
 /*NAV*/
 backBtn.addEventListener("click", () => {
-  window.location.href = "admin.html";
+  // UPDATED: now points to index.html
+  window.location.href = "index.html";
 });
 
 logoutBtn.addEventListener("click", () => {
@@ -88,7 +89,8 @@ createBtn.addEventListener("click", async () => {
 
     if (!res.ok) throw new Error("Failed to create post");
 
-    window.location.href = "admin.html";
+    // UPDATED: now points to index.html
+    window.location.href = "index.html";
   } catch (err) {
     messageEl.textContent = err.message;
   }
