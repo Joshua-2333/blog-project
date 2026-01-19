@@ -1,42 +1,79 @@
 // Admin/admin.js
-import { BASE_URL } from "./config.js";
+import { BASE_URL, READER_URL } from "./config.js";
+
+/* IMPORTANT: Read token from URL (passed from Reader) */
+const urlParams = new URLSearchParams(window.location.search);
+const tokenFromUrl = urlParams.get("token");
+const userFromUrl = urlParams.get("user");
+
+console.log("=== ADMIN DEBUG START ===");
+console.log("tokenFromUrl:", tokenFromUrl);
+console.log("userFromUrl:", userFromUrl);
+
+/* SAVE SESSION FROM URL (FIXED) */
+if (tokenFromUrl && userFromUrl) {
+  localStorage.setItem("jwt", tokenFromUrl);
+
+  // ✅ FIX: decode + parse user JSON correctly
+  try {
+    const decodedUser = JSON.parse(decodeURIComponent(userFromUrl));
+    localStorage.setItem("user", JSON.stringify(decodedUser));
+  } catch (err) {
+    console.error("Failed to parse user from URL", err);
+  }
+
+  // remove query params so refresh doesn't break
+  window.history.replaceState({}, document.title, window.location.pathname);
+}
 
 const JWT = localStorage.getItem("jwt");
 const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-/*AUTH GUARD*/
+console.log("JWT from localStorage:", JWT);
+console.log("user from localStorage:", user);
+
+/* AUTH GUARD */
 if (!JWT || user.role !== "ADMIN") {
+  console.warn("🚨 AUTH GUARD FAILED");
+  console.warn("JWT:", JWT);
+  console.warn("user.role:", user.role);
   alert("Admins only");
   localStorage.clear();
-  window.location.href = "https://blog-project-reader.onrender.com/";
+  console.log("Redirecting to reader...");
+  window.location.href = READER_URL;
 }
 
-/*DOM*/
+/* DOM */
 const logoutBtn = document.getElementById("logout-btn");
 const newPostBtn = document.getElementById("new-post-btn");
 const postsList = document.getElementById("posts-list");
 const loadingPosts = document.getElementById("loading-posts");
 
-/*LOGOUT */
+/* LOGOUT */
 logoutBtn.addEventListener("click", () => {
+  console.log("Logout clicked");
   localStorage.clear();
-  window.location.href = "https://blog-project-reader.onrender.com/";
+  window.location.href = `${READER_URL}?logout=1`;
 });
 
-/*NAV*/
+/* NAV */
 newPostBtn.addEventListener("click", () => {
   window.location.href = "new-post.html";
 });
 
-/*FETCH POSTS*/
+/* FETCH POSTS */
 async function fetchPosts() {
   postsList.innerHTML = "";
   loadingPosts.hidden = false;
 
   try {
+    console.log("Fetching posts with JWT:", JWT);
+
     const res = await fetch(`${BASE_URL}/posts?mine=true`, {
       headers: { Authorization: `Bearer ${JWT}` },
     });
+
+    console.log("posts response status:", res.status);
 
     const posts = await res.json();
     loadingPosts.hidden = true;
@@ -81,13 +118,14 @@ async function fetchPosts() {
     });
 
     setupButtons();
-  } catch {
+  } catch (err) {
     loadingPosts.hidden = true;
     postsList.innerHTML = "<p>Error loading posts.</p>";
+    console.error("fetchPosts error:", err);
   }
 }
 
-/*POST ACTIONS*/
+/* POST ACTIONS */
 function setupButtons() {
   document.querySelectorAll(".delete-btn").forEach((btn) => {
     btn.addEventListener("click", async () => {
@@ -168,14 +206,17 @@ function setupButtons() {
               if (!content) return;
 
               try {
-                const res = await fetch(`${BASE_URL}/comments/${commentId}/reply`, {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${JWT}`,
-                  },
-                  body: JSON.stringify({ content }),
-                });
+                const res = await fetch(
+                  `${BASE_URL}/comments/${commentId}/reply`,
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${JWT}`,
+                    },
+                    body: JSON.stringify({ content }),
+                  }
+                );
 
                 if (!res.ok) throw new Error("Failed to submit reply");
 
@@ -199,5 +240,5 @@ function setupButtons() {
   });
 }
 
-/*INIT*/
+/* INIT */
 fetchPosts();

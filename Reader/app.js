@@ -1,5 +1,5 @@
 // Reader/app.js
-import { BASE_URL } from "./config.js";
+import { BASE_URL, ADMIN_URL } from "./config.js";
 import { openModal } from "./modal.js";
 
 let JWT = localStorage.getItem("jwt");
@@ -221,7 +221,15 @@ loginBtn.addEventListener("click", async () => {
 
     // Redirect admin ONLY after login
     if (data.user.role === "ADMIN") {
-      window.location.href = "/Admin/index.html";
+      // ⚠️ IMPORTANT: Pass token to Admin site via URL
+      window.location.href = `${ADMIN_URL}?token=${data.token}&user=${encodeURIComponent(
+        JSON.stringify({
+          id: data.user.id,
+          username: data.user.username,
+          email: data.user.email,
+          role: data.user.role,
+        })
+      )}`;
     } else {
       showUserHome();
     }
@@ -277,9 +285,11 @@ logoutBtn.addEventListener("click", () => {
 
 /*INIT*/
 (function init() {
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  // If we arrived from Admin logout, clear storage
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get("logout") === "1") {
+    localStorage.clear();
+  }
 
-  // IMPORTANT: Reader should NOT auto redirect to Admin
-  // only show Reader if admin is logged in (still)
   JWT ? showUserHome() : showPublicHome();
 })();
