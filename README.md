@@ -47,3 +47,7 @@ Username: Irad
 Password: Odyssey
 
 **Note:** The admin account is for demo purposes only. Do not use in production.
+
+## Demo
+
+https://blog-project-reader.onrender.com
